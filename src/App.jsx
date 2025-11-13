@@ -78,7 +78,6 @@ export default function App() {
   let newDeck = [...deck];
   let dealerHand = [...dealer];
 
-  // Revela carta escondida
   setDealerRevealed(true);
 
   // Pausa breve antes do dealer agir
@@ -90,7 +89,7 @@ export default function App() {
     dealerHand.push(newCard);
     setDealer([...dealerHand]); // atualiza visualmente
     setDeck([...newDeck]);
-    await new Promise(resolve => setTimeout(resolve, 800)); // pequena pausa
+    await new Promise(resolve => setTimeout(resolve, 800)); 
   }
 
   // Calcula resultado final
@@ -149,13 +148,13 @@ async function playerDouble(){
   setDeck([...newDeck]);
   setPlayer([...newPlayerHand]);
 
-  //para o jogador e revelar o dealer
+  //parar o jogador e revelar o dealer
 
   setDealerRevealed(true);
   setGameStarted(false);
 
   await new Promise(resolve => setTimeout(resolve, 800));
- // se ele perder  com double
+ // se jogador perde com o double
   if (handValue(newPlayerHand) > 21) {
     setDealerRevealed(true);
     setMessage("Player busts after doubling! Dealer wins!");
@@ -164,7 +163,7 @@ async function playerDouble(){
     setShowPopup(true);
     return;
   }
-
+  //use o stand (mesma codigo)
   playerStand();
 }
 
@@ -180,7 +179,7 @@ async function playerSplit(){
   setDeck(newDeck);
   setPlayerHands([firstHand, secondHand]);
   setActiveHandIndex(0);
-  setPlayer([]); // limpa a mão "original"
+  setPlayer([]); // limpa a mão "original
   setMessage("Playing Hand 1...");
 }
 
