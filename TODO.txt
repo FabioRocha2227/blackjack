@@ -1,0 +1,8 @@
+npm run dev - para correr jogo
+
+TODO
+
+IMPLEMENTAR WIN COM BLACKJACK
+adicionar "graficos"
+adicionar apostas e balance
+adicionar a cheat sheet para aprender a jogar
