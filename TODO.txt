@@ -6,3 +6,10 @@ IMPLEMENTAR WIN COM BLACKJACK
 adicionar "graficos"
 adicionar apostas e balance
 adicionar a cheat sheet para aprender a jogar
+
+
+NOTAS IMPORTANTES:
+
+alterar a logica dos baralhos. Começar com deck de x cartas- jogar essas cartas todas e depois quando deck chegar a um numero de cartas adicionar novo deck
+
+no split, fazer split das cartas 1 e 1. quando jogamos a mao 1 damos draw a 2 carta e começamoos a jgr apartir dai. quandoo vamoos para a 2 mao fazer o mesmo
