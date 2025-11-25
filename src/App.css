@@ -32,7 +32,11 @@ body {
   justify-content: center;
   margin-top: 10px;
 }
-
+.card img {
+  width: 100px;   /* aumenta aqui */
+  height: auto;   /* mantém proporção */
+}
+/*
 .card {
   background: white;
   color: black;
@@ -53,13 +57,13 @@ body {
   perspective: 1000px;
   position: relative;
   
-}
-
+}*/
+/*
 .card.back {
   background: linear-gradient(135deg, #004, #002);
   color: #fff;
   transform: rotateY(0deg);
-}
+}*/
 
 @keyframes drop {
   to {

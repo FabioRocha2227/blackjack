@@ -16,12 +16,12 @@ export default function App() {
   const [splitActive, setSplitActive] = useState(false); // controla se o split está ativo
 
 
-  function startGame() {
+  async function startGame() {
     const newDeck = buildDeck();
     shuffleDeck(newDeck);
     //forçar carta para teste
-    const forcedCard = { rank: "8", suit: "Hearts" }; 
-    const playerHand = [forcedCard, { rank: "8", suit: "Hearts" }]; 
+    const forcedCard = { rank: "Ace", suit: "Hearts" }; 
+    const playerHand = [forcedCard, { rank: "Jack", suit: "Hearts" }]; 
     //const playerHand = [newDeck.pop(), newDeck.pop()];
     const dealerHand = [newDeck.pop(), newDeck.pop()];
 
@@ -34,7 +34,57 @@ export default function App() {
     setMessage("");
     setDealerRevealed(false); //Dealer volta a esconder a 2ª carta
     setGameStarted(true);
+
+    // verificar blackjack inicial
+    const playerTotal = handValue(playerHand);
+    const dealerTotal = handValue(dealerHand);
+    
+    if (playerTotal === 21) {
+      // player blackjack
+      setDealerRevealed(true);
+      setGameStarted(false);
+
+      if (dealerTotal === 21) {
+        setMessage("Push!");
+      } else {
+        setMessage("Blackjack! Player wins!");
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setShowPopup(true);
+    }
   }
+
+function cardToFileName(card) {
+  const suitMap = {
+    Hearts: "hearts",
+    Diamonds: "diamonds",
+    Clubs: "clubs",
+    Spades: "spades"
+  };
+
+  const rankMap = {
+    "Ace": "A",
+    "Jack": "J",
+    "Queen": "Q",
+    "King": "K",
+    "10": "10",
+    "9": "09",
+    "8": "08",
+    "7": "07",
+    "6": "06",
+    "5": "05",
+    "4": "04",
+    "3": "03",
+    "2": "02"
+  };
+
+  const suit = suitMap[card.suit];
+  const rank = rankMap[card.rank];
+
+  return `card_${suit}_${rank}.png`;
+}
+
 
   async function playerHit() {
     if (handValue(player) >= 21) return;
@@ -257,25 +307,31 @@ return (
 
     {/* Dealer Area */}
     <div className="dealer-area">
-  <h2>Dealer</h2>
-  <div className="hand">
-    {dealer.map((c, i) => {
-      const isBack = !dealerRevealed && i === 1; // segunda carta escondida
-      return (
-        <div
-          key={i}
-          className={`card ${isBack ? "back" : ""} ${dealerRevealed && i === 1 ? "flip" : ""}`}
-        >
-          {dealerRevealed || i === 0 ? `${c.rank}${c.suit}` : "🂠"}
-        </div>
-      );
-    })}
-  </div>
-  <p className="hand-value">
-    {dealerRevealed ? `Value: ${handValue(dealer)}` : "Value: ?"}
-  </p>
-  <p className="table-rule">Dealer hits on 16</p>
-</div>
+      <h2>Dealer</h2>
+      <div className="hand">
+        {dealer.map((c, i) => {
+          const isBack = !dealerRevealed && i === 1;
+
+          return (
+            <div
+              key={i}
+              className={`card ${isBack ? "back" : ""} ${dealerRevealed && i === 1 ? "flip" : ""}`}
+            >
+              {isBack ? (
+                <img src="public/cards/card_back.png" alt="Hidden card" />
+              ) : (
+                <img src={`/cards/${cardToFileName(c)}`} alt={`${c.rank} of ${c.suit}`} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <p className="hand-value">
+        {dealerRevealed ? `Value: ${handValue(dealer)}` : "Value: ?"}
+      </p>
+      <p className="table-rule">Dealer hits on 16</p>
+    </div>
 
     {/* Player Area */}
     <div className="player-area">
@@ -285,7 +341,9 @@ return (
         <>
           <div className="hand">
             {player.map((c, i) => (
-              <div key={i} className="card">{`${c.rank}${c.suit}`}</div>
+              <div key={i} className="card">
+                <img src={`/cards/${cardToFileName(c)}`} alt={`${c.rank} of ${c.suit}`} />
+              </div>
             ))}
           </div>
           <p className="hand-value">Value: {handValue(player)}</p>
@@ -298,7 +356,9 @@ return (
           >
             <div className="hand">
               {hand.map((c, j) => (
-                <div key={j} className="card">{`${c.rank}${c.suit}`}</div>
+                <div key={j} className="card">
+                  <img src={`/cards/${cardToFileName(c)}`} alt={`${c.rank} of ${c.suit}`} />
+                </div>
               ))}
             </div>
             <p className="hand-value">Hand {i + 1} Value: {handValue(hand)}</p>
@@ -318,9 +378,11 @@ return (
             <>
               <button onClick={playerHit}>Hit</button>
               <button onClick={playerStand}>Stand</button>
-              { player.length === 2 && (
-                <button onClick={playerDouble}>Double</button>  
+
+              {player.length === 2 && (
+                <button onClick={playerDouble}>Double</button>
               )}
+
               {player.length === 2 && player[0].rank === player[1].rank && (
                 <button onClick={playerSplit}>Split</button>
               )}
