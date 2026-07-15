@@ -8,4 +8,5 @@ adicionar a cheat sheet para aprender a jogar
 
 NOTAS IMPORTANTES:
 
-visualmente alterar o split (carta dada ficar na horizontal)
+adicionar split option
+visualmente alterar o doouble (carta dada ficar na horizontal)
