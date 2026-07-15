@@ -1,7 +1,8 @@
 import Hand from "./Hand.jsx";
 import { handValue } from "../utils/deck.js";
+import { memo } from "react";
 
-export default function DealerArea({ dealer, dealerRevealed }) {
+function DealerArea({ dealer, dealerRevealed }) {
   return (
     <div className="dealer-area">
       <h2>Dealer</h2>
@@ -15,3 +16,5 @@ export default function DealerArea({ dealer, dealerRevealed }) {
     </div>
   );
 }
+
+export default memo(DealerArea);

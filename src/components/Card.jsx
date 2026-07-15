@@ -1,8 +1,9 @@
 import { CARD_BACK_SRC, cardImageSrc } from "../utils/cardImages.js";
+import { memo } from "react";
 
 const CARD_IMAGE_SIZE = 64;
 
-export default function Card({ card, hidden = false, flip = false }) {
+function Card({ card, hidden = false, flip = false }) {
   return (
     <div className={`card ${hidden ? "back" : ""} ${flip ? "flip" : ""}`}>
       {hidden ? (
@@ -23,3 +24,5 @@ export default function Card({ card, hidden = false, flip = false }) {
     </div>
   );
 }
+
+export default memo(Card);

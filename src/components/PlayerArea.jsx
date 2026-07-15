@@ -1,7 +1,8 @@
 import Hand from "./Hand.jsx";
 import { handValue } from "../utils/deck.js";
+import { memo } from "react";
 
-export default function PlayerArea({ player, playerHands, splitActive, activeHandIndex }) {
+function PlayerArea({ player, playerHands, splitActive, activeHandIndex }) {
   return (
     <div className="player-area">
       <h2>Your Hand{splitActive ? "s" : ""}</h2>
@@ -21,3 +22,5 @@ export default function PlayerArea({ player, playerHands, splitActive, activeHan
     </div>
   );
 }
+
+export default memo(PlayerArea);

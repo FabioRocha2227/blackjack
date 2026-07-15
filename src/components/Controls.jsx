@@ -1,6 +1,7 @@
 import { canDouble } from "../utils/doubleRules.js";
+import { memo } from "react";
 
-export default function Controls({
+function Controls({
   gameStarted,
   showPopup,
   splitActive,
@@ -45,3 +46,5 @@ export default function Controls({
     </div>
   );
 }
+
+export default memo(Controls);

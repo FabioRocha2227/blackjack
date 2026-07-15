@@ -8,8 +8,11 @@ export default function GameTable() {
   const game = useBlackjack();
 
   return (
-    <div className="table-contairer">
-      <h1 className="game-title">♠ Blackjack</h1>
+    <div className="table-container">
+      <header className="table-header">
+        <h1 className="game-title">♠ Blackjack</h1>
+        <p className="game-subtitle">A polished practice table for hits, splits, and doubles.</p>
+      </header>
 
       <DealerArea dealer={game.dealer} dealerRevealed={game.dealerRevealed} />
 

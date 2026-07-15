@@ -1,6 +1,7 @@
 import Card from "./Card.jsx";
+import { memo } from "react";
 
-export default function Hand({ cards, hiddenIndexes = [], flipIndexes = [], valueLabel }) {
+function Hand({ cards, hiddenIndexes = [], flipIndexes = [], valueLabel }) {
   return (
     <>
       <div className="hand">
@@ -17,3 +18,5 @@ export default function Hand({ cards, hiddenIndexes = [], flipIndexes = [], valu
     </>
   );
 }
+
+export default memo(Hand);
