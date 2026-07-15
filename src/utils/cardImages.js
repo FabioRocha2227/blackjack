@@ -21,6 +21,10 @@ const RANK_MAP = {
   "2": "02",
 };
 
+function assetUrl(path) {
+  return `${import.meta.env.BASE_URL}${path}`;
+}
+
 export function cardToFileName(card) {
   const suit = SUIT_MAP[card.suit];
   const rank = RANK_MAP[card.rank];
@@ -28,7 +32,7 @@ export function cardToFileName(card) {
 }
 
 export function cardImageSrc(card) {
-  return `/cards/${cardToFileName(card)}`;
+  return assetUrl(`cards/${cardToFileName(card)}`);
 }
 
-export const CARD_BACK_SRC = "/cards/card_back.png";
+export const CARD_BACK_SRC = assetUrl("cards/card_back.png");
