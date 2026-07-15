@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { buildDeck, shuffleDeck, handValue } from "./utils/deck.js";
+import { canDouble } from "./utils/doubleRules.js";
 //import { basicStrategyHint } from "./utils/strategy.js";
 import "./App.css";
+
+// Below this many cards left in the shoe, we cut and bring in a fresh deck
+const RESHUFFLE_THRESHOLD = 15;
 
 export default function App() {
   const [deck, setDeck] = useState([]);
@@ -17,12 +21,14 @@ export default function App() {
 
 
   async function startGame() {
-    const newDeck = buildDeck();
-    shuffleDeck(newDeck);
+    // Reuse the current shoe until it runs low, then cut in a fresh shuffled deck.
+    // This avoids reshuffling a full 52-card deck every single hand.
+    let newDeck = deck.length < RESHUFFLE_THRESHOLD ? shuffleDeck(buildDeck()) : [...deck];
+
     //forçar carta para teste
-    const forcedCard = { rank: "Ace", suit: "Hearts" }; 
-    const playerHand = [forcedCard, { rank: "Jack", suit: "Hearts" }]; 
-    //const playerHand = [newDeck.pop(), newDeck.pop()];
+    //const forcedCard = { rank: "Ace", suit: "Hearts" }; 
+    //const playerHand = [forcedCard, { rank: "Jack", suit: "Hearts" }]; 
+    const playerHand = [newDeck.pop(), newDeck.pop()];
     const dealerHand = [newDeck.pop(), newDeck.pop()];
 
     setDeck(newDeck);
@@ -189,7 +195,7 @@ function playAgain(){
 
 
 async function playerDouble(){
-  if (!gameStarted || player.length !== 2) return;
+  if (!gameStarted || !canDouble(player)) return;
 
   let newDeck = [...deck];
   const newCard = newDeck.pop();
@@ -243,11 +249,40 @@ async function playerHitSplit(index) {
   setDeck(newDeck);
   setPlayerHands(newHands);
 
-  if (handValue(newHands[index]) > 21) {
+  const handTotal = handValue(newHands[index]);
+
+  if (handTotal > 21) {
     setMessage(`Hand ${index + 1} busts!`);
     await new Promise(res => setTimeout(res, 800));
     nextSplitHand(index);
+  } else if (handTotal === 21) {
+    setMessage(`Hand ${index + 1} hits 21!`);
+    await new Promise(res => setTimeout(res, 800));
+    nextSplitHand(index);
   }
+}
+
+async function playerDoubleSplit(index) {
+  if (!canDouble(playerHands[index])) return;
+
+  const newDeck = [...deck];
+  const newCard = newDeck.pop();
+
+  const newHands = [...playerHands];
+  newHands[index] = [...newHands[index], newCard];
+
+  setDeck(newDeck);
+  setPlayerHands(newHands);
+
+  const handTotal = handValue(newHands[index]);
+  setMessage(
+    handTotal > 21
+      ? `Hand ${index + 1} busts after doubling!`
+      : `Hand ${index + 1} stands after doubling.`
+  );
+
+  await new Promise(res => setTimeout(res, 800));
+  nextSplitHand(index);
 }
 
 async function playerStandSplit(index) {
@@ -318,7 +353,7 @@ return (
               className={`card ${isBack ? "back" : ""} ${dealerRevealed && i === 1 ? "flip" : ""}`}
             >
               {isBack ? (
-                <img src="public/cards/card_back.png" alt="Hidden card" />
+                <img src="/cards/card_back.png" alt="Hidden card" />
               ) : (
                 <img src={`/cards/${cardToFileName(c)}`} alt={`${c.rank} of ${c.suit}`} />
               )}
@@ -379,7 +414,7 @@ return (
               <button onClick={playerHit}>Hit</button>
               <button onClick={playerStand}>Stand</button>
 
-              {player.length === 2 && (
+              {canDouble(player) && (
                 <button onClick={playerDouble}>Double</button>
               )}
 
@@ -391,6 +426,9 @@ return (
             <>
               <button onClick={() => playerHitSplit(activeHandIndex)}>Hit</button>
               <button onClick={() => playerStandSplit(activeHandIndex)}>Stand</button>
+              {canDouble(playerHands[activeHandIndex]) && (
+                <button onClick={() => playerDoubleSplit(activeHandIndex)}>Double</button>
+              )}
             </>
           )}
         </>
