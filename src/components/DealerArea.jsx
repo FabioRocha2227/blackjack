@@ -1,0 +1,17 @@
+import Hand from "./Hand.jsx";
+import { handValue } from "../utils/deck.js";
+
+export default function DealerArea({ dealer, dealerRevealed }) {
+  return (
+    <div className="dealer-area">
+      <h2>Dealer</h2>
+      <Hand
+        cards={dealer}
+        hiddenIndexes={!dealerRevealed ? [1] : []}
+        flipIndexes={dealerRevealed ? [1] : []}
+        valueLabel={dealerRevealed ? `Value: ${handValue(dealer)}` : "Value: ?"}
+      />
+      <p className="table-rule">Dealer hits on 16</p>
+    </div>
+  );
+}
