@@ -2,7 +2,11 @@ import { spawn } from 'node:child_process'
 import net from 'node:net'
 import { resolve } from 'node:path'
 import process from 'node:process'
-import waitOn from 'wait-on'
+import { ensureDependencies } from './ensure-deps.mjs'
+
+await ensureDependencies()
+
+const { default: waitOn } = await import('wait-on')
 
 const viteCli = resolve(process.cwd(), 'node_modules', 'vite', 'bin', 'vite.js')
 const electronCli = resolve(process.cwd(), 'node_modules', 'electron', 'cli.js')

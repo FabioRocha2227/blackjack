@@ -5,6 +5,13 @@
   "type": "module",
   "main": "electron-main.js",
   "scripts": {
+    "setup": "node scripts/ensure-deps.mjs",
+    "predev": "node scripts/ensure-deps.mjs",
+    "predev:desktop": "node scripts/ensure-deps.mjs",
+    "prebuild": "node scripts/ensure-deps.mjs",
+    "prestart": "node scripts/ensure-deps.mjs",
+    "prelint": "node scripts/ensure-deps.mjs",
+    "prepreview": "node scripts/ensure-deps.mjs",
     "dev": "vite",
     "dev:desktop": "npm run build && electron .",
     "build": "vite build",

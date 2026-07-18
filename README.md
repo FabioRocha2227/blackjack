@@ -2,11 +2,14 @@
 
 ## Setup
 
-1. Install dependencies:
+1. Install Node.js and npm if they are not already on the machine.
+2. Optional: install dependencies manually if you want them cached before the first run:
 
 	```bash
 	npm install
 	```
+
+3. Or just run any npm script. The first `npm` run will bootstrap dependencies automatically if `node_modules` is missing.
 
 ## Run in Browser
 

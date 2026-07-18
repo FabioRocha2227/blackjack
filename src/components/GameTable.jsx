@@ -21,10 +21,6 @@ export default function GameTable({ profile, onExit }) {
             </p>
           )}
         </div>
-
-        <button type="button" className="menu-link" onClick={onExit}>
-          ← Menu
-        </button>
       </header>
 
       <DealerArea dealer={game.dealer} dealerRevealed={game.dealerRevealed} />
@@ -52,6 +48,8 @@ export default function GameTable({ profile, onExit }) {
         onStandSplit={game.playerStandSplit}
         onDoubleSplit={game.playerDoubleSplit}
       />
+
+      <button type="button" className="menu-link table-menu-link" onClick={onExit}>Back</button>
 
       <ResultPopup show={game.showPopup} message={game.message} onPlayAgain={game.playAgain} />
     </div>

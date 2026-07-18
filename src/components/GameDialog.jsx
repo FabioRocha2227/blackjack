@@ -43,7 +43,7 @@ export default function GameDialog({onStart, onCancel}) {
                         type="number"
                         value={chips}
                         onChange={e => setChips(e.target.value)}
-                        min = {1}
+                        min = {50}
                         step = {50}
                         inputMode = "numeric"
                         />
