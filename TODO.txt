@@ -10,3 +10,4 @@ NOTAS IMPORTANTES:
 
 adicionar split option
 visualmente alterar o doouble (carta dada ficar na horizontal)
+erro split dealer bj and han bj. dealer wins (needs more testing)

@@ -22,8 +22,8 @@ export function useBlackjack() {
     let newDeck = deck.length < RESHUFFLE_THRESHOLD ? shuffleDeck(buildDeck()) : [...deck];
 
     // Uncomment the next line to force a split test hand.
-    //const playerHand = [{ rank: "4", suit: "Spades" }, { rank: "4", suit: "Diamonds" }];
-    const playerHand = [newDeck.pop(), newDeck.pop()];
+    const playerHand = [{ rank: "4", suit: "Spades" }, { rank: "4", suit: "Diamonds" }];
+    //const playerHand = [newDeck.pop(), newDeck.pop()];
     const dealerHand = [newDeck.pop(), newDeck.pop()];
 
     setDeck(newDeck);
@@ -151,57 +151,60 @@ export function useBlackjack() {
   async function playerHitSplit(index) {
     const newDeck = [...deck];
     const newCard = newDeck.pop();
-
+ 
     const newHands = [...playerHands];
     newHands[index] = [...newHands[index], newCard];
-
+ 
     setDeck(newDeck);
     setPlayerHands(newHands);
-
+ 
     const handTotal = handValue(newHands[index]);
-
+ 
     if (handTotal > 21) {
       setMessage(`Hand ${index + 1} busts!`);
       await new Promise(res => setTimeout(res, 800));
-      nextSplitHand(index);
+      nextSplitHand(index, newHands, newDeck);
     } else if (handTotal === 21) {
       setMessage(`Hand ${index + 1} hits 21!`);
       await new Promise(res => setTimeout(res, 800));
-      nextSplitHand(index);
+      nextSplitHand(index, newHands, newDeck);
     }
   }
 
+
   async function playerStandSplit(index) {
     setMessage(`Hand ${index + 1} stands.`);
-    await new Promise(res => setTimeout(res, 800));
-    nextSplitHand(index);
+    await new Promise(res => setTimeout(res, 400));
+    nextSplitHand(index, playerHands, deck);
   }
+
 
   async function playerDoubleSplit(index) {
     if (!canDouble(playerHands[index])) return;
-
+ 
     const newDeck = [...deck];
     const newCard = newDeck.pop();
-
+ 
     const newHands = [...playerHands];
     newHands[index] = [...newHands[index], newCard];
-
+ 
     setDeck(newDeck);
     setPlayerHands(newHands);
-
+ 
     const handTotal = handValue(newHands[index]);
     setMessage(
       handTotal > 21
         ? `Hand ${index + 1} busts after doubling!`
         : `Hand ${index + 1} stands after doubling.`
     );
-
+ 
     await new Promise(res => setTimeout(res, 800));
-    nextSplitHand(index);
+    nextSplitHand(index, newHands, newDeck);
   }
 
-  async function nextSplitHand(index) {
-    if (index + 1 < playerHands.length) {
+
+  async function nextSplitHand(index, hands, currentDeck) {
+    if (index + 1 < hands.length) {
       setMessage(`Hand ${index + 1} done! Moving to Hand ${index + 2}...`);
       await new Promise(res => setTimeout(res, 400));
       setActiveHandIndex(index + 1);
@@ -209,7 +212,7 @@ export function useBlackjack() {
     } else {
       setMessage("Dealer's turn...");
       await new Promise(res => setTimeout(res, 400));
-      dealerPlayAfterSplit();
+      dealerPlayAfterSplit(hands, currentDeck);
     }
   }
 
