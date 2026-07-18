@@ -1,3 +1,161 @@
+.menu-screen {
+  position: relative;
+  width: min(920px, calc(100vw - 24px));
+  min-height: min(760px, calc(100vh - 24px));
+  margin: 12px auto;
+  padding: clamp(28px, 5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 239, 192, 0.12);
+  background:
+    radial-gradient(circle at top, rgba(255, 214, 102, 0.14), transparent 42%),
+    radial-gradient(circle at 82% 18%, rgba(23, 184, 124, 0.12), transparent 28%),
+    linear-gradient(180deg, rgba(8, 34, 21, 0.96), rgba(4, 18, 11, 0.98));
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+}
+
+.menu-screen::before,
+.menu-screen::after {
+  content: "";
+  position: absolute;
+  inset: auto;
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0.22;
+}
+
+.menu-screen::before {
+  width: 280px;
+  height: 280px;
+  top: -90px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(255, 214, 102, 0.22), transparent 68%);
+}
+
+.menu-screen::after {
+  width: 340px;
+  height: 340px;
+  right: -130px;
+  bottom: -150px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 66%);
+}
+
+.menu-screen .table-header {
+  max-width: 720px;
+  gap: 10px;
+}
+
+.menu-buttons {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 420px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menu-buttons button,
+.menu-link,
+.popup-actions button {
+  border: 1px solid rgba(255, 233, 172, 0.16);
+  border-radius: 16px;
+  padding: 0.9rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, border-color 180ms ease;
+}
+
+.menu-buttons button {
+  width: 100%;
+  color: #102213;
+  background: linear-gradient(180deg, #ffe58f 0%, #f4bf42 100%);
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.menu-buttons button:hover,
+.menu-link:hover,
+.popup-actions button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.menu-buttons button:active,
+.menu-link:active,
+.popup-actions button:active {
+  transform: translateY(0);
+}
+
+.menu-buttons button:focus-visible,
+.menu-link:focus-visible,
+.popup-actions button:focus-visible,
+.form-field input:focus-visible {
+  outline: 3px solid rgba(255, 214, 102, 0.58);
+  outline-offset: 3px;
+}
+
+.menu-buttons button.secondary,
+.popup-actions button.secondary,
+.menu-link {
+  color: rgba(255, 245, 214, 0.94);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.menu-buttons button.secondary:hover,
+.popup-actions button.secondary:hover,
+.menu-link:hover {
+  border-color: rgba(255, 233, 172, 0.28);
+}
+
+.menu-link {
+  align-self: flex-start;
+  padding-inline: 1rem;
+}
+
+.table-header--game {
+  width: min(100%, 1040px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 18px;
+  text-align: left;
+}
+
+.table-copy {
+  display: grid;
+  gap: 8px;
+  flex: 1 1 360px;
+  min-width: 0;
+}
+
+.table-credits {
+  margin: 0;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 245, 214, 0.92);
+  font-size: 0.88rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .table-container {
   position: relative;
   width: min(1180px, calc(100vw - 24px));
@@ -281,20 +439,21 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(1, 8, 5, 0.7);
+  background: rgba(1, 8, 5, 0.74);
+  backdrop-filter: blur(8px);
   z-index: 1000;
 }
 
 .popup {
-  width: min(92vw, 420px);
-  padding: 28px 28px 24px;
-  border-radius: 24px;
+  width: min(92vw, 520px);
+  padding: 30px 30px 26px;
+  border-radius: 26px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background:
-    radial-gradient(circle at top, rgba(255, 214, 102, 0.14), transparent 50%),
+    radial-gradient(circle at top, rgba(255, 214, 102, 0.16), transparent 50%),
     linear-gradient(180deg, rgba(17, 31, 21, 0.98), rgba(8, 19, 13, 0.98));
   color: #fff4d0;
-  text-align: center;
+  text-align: left;
   box-shadow:
     0 24px 80px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.07);
@@ -308,11 +467,95 @@
   letter-spacing: 0.06em;
 }
 
-.popup button {
+.new-game-form {
+  display: grid;
+  gap: 16px;
+}
+
+.form-field {
+  display: grid;
+  gap: 8px;
+}
+
+.form-field span {
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 240, 203, 0.68);
+}
+
+.form-field input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 239, 192, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff4d0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.form-field input::placeholder {
+  color: rgba(255, 245, 214, 0.4);
+}
+
+.form-field input[type="number"] {
+  appearance: textfield;
+}
+
+.form-field input::-webkit-outer-spin-button,
+.form-field input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.popup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.popup-actions button {
+  flex: 1 1 160px;
+}
+
+.popup > button {
   width: 100%;
 }
 
+.popup-actions button:not(.secondary) {
+  color: #102213;
+  background: linear-gradient(180deg, #ffe58f 0%, #f4bf42 100%);
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.popup-actions button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+  transform: none;
+  filter: saturate(0.7);
+}
+
 @media (max-width: 720px) {
+  .menu-screen {
+    width: min(100vw - 14px, 920px);
+    min-height: min(100vh - 14px, 760px);
+    margin: 7px auto;
+    border-radius: 22px;
+    padding: 24px 18px;
+  }
+
+  .menu-buttons {
+    width: min(100%, 360px);
+  }
+
+  .menu-link {
+    align-self: stretch;
+    width: 100%;
+  }
+
   .table-container {
     width: min(100vw - 14px, 1180px);
     margin: 7px auto;
@@ -337,6 +580,16 @@
   .card img {
     width: clamp(72px, 19vw, 92px);
   }
+
+  .popup {
+    width: min(100%, 460px);
+    padding: 24px 20px 20px;
+    border-radius: 22px;
+  }
+
+  .popup-actions {
+    flex-direction: column;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -349,3 +602,6 @@
     scroll-behavior: auto !important;
   }
 }
+
+
+
