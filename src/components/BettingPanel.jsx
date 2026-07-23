@@ -4,26 +4,20 @@ const CHIP_PRESETS = [10, 25, 50, 100];
 const MIN_BET = 10;
 
 export default function BettingPanel({ chips, lastBet, onDeal }) {
-    const startingBValue = Math.max(Math.min(lastBet || MIN_BET, chips), 0);
-  const [betInput, setBetInput] = useState(String(startingBValue));
+  const [betInput, setBetInput] = useState("0");
 
-useEffect(() => {
-    setBetInput(prev => {
-      const n = Number(prev);
-      if (!Number.isFinite(n) || n > chips) {
-        return String(Math.min(chips, MIN_BET));
-      }
-      return prev;
-    });
-  }, [chips]);
+  useEffect(() => {
+    const nextBet = Math.max(0, Math.min(Number(lastBet) || 0, chips));
+    setBetInput(String(nextBet));
+  }, [lastBet, chips]);
 
   const betValue = Number(betInput);
   const isValid = Number.isFinite(betValue) && betValue >= MIN_BET && betValue <= chips && chips > 0;
 
-  function addChip(amount) {
+  function addPresetBet(amount) {
     setBetInput(prev => {
-      const n = Number(prev) || 0;
-      return String(Math.min(n + amount, chips));
+      const currentBet = Number(prev) || 0;
+      return String(Math.min(currentBet + amount, chips));
     });
   }
 
@@ -52,10 +46,10 @@ useEffect(() => {
             type="button"
             key={amount}
             className="secondary"
-            onClick={() => addChip(amount)}
+            onClick={() => addPresetBet(amount)}
             disabled={amount > chips}
           >
-            +{amount}
+            {amount}
           </button>
         ))}
         <button type="button" className="secondary" onClick={() => setBetInput("0")}>
@@ -68,11 +62,10 @@ useEffect(() => {
         <input
           type="number"
           value={betInput}
-          onChange={e => setBetInput(e.target.value)}
+          readOnly
           min={MIN_BET}
           max={chips}
           step={5}
-          inputMode="numeric"
         />
       </label>
 
