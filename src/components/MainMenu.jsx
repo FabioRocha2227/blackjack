@@ -3,7 +3,7 @@ export default function MainMenu({ onPlay, onLeaderboard, onQuit }) {
         <div className = "menu-screen">
             <header className = "table-header">
                 <h1 className = "game-title">♠ Blackjack</h1>
-                <p className = "game-subtitle">Place your bet. Beat the dealer to 21.</p>
+                <p className = "game-subtitle">Place your bet.</p>
             </header>
 
             <nav className = "menu-buttons">

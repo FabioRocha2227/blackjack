@@ -6,19 +6,36 @@ import { canDouble } from "../utils/doubleRules.js";
 // instead of reshuffling a full 52-card deck every single hand.
 const RESHUFFLE_THRESHOLD = 15;
 
-export function useBlackjack() {
+export function useBlackjack(initialChips = 500) {
   const [deck, setDeck] = useState([]);
   const [player, setPlayer] = useState([]);
   const [dealer, setDealer] = useState([]);
   const [message, setMessage] = useState("");
   const [dealerRevealed, setDealerRevealed] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [awaitingPlayerInput, setAwaitingPlayerInput] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [playerHands, setPlayerHands] = useState([]); // hands after a split
   const [activeHandIndex, setActiveHandIndex] = useState(0); // which split hand is being played
   const [splitActive, setSplitActive] = useState(false);
 
-  async function startGame() {
+  const [chips, setChips] = useState(initialChips);
+  const [bet, setBet] = useState(0);
+  const [handBets, setHandBets] = useState([]); // bets for each hand after a split
+
+  //Betting
+  function placeBet(amount) {
+    if(gameStarted) return; 
+
+    const wager = Math.floor(Number(amount));
+    if(!Number.isFinite(wager) || (wager <= 0) || wager > chips) return;
+
+    setChips( c => c- wager);
+    setBet(wager);
+    deal(wager);
+  }
+
+  async function deal(wager) {
     let newDeck = deck.length < RESHUFFLE_THRESHOLD ? shuffleDeck(buildDeck()) : [...deck];
 
     // Uncomment the next line to force a split test hand.
@@ -35,21 +52,35 @@ export function useBlackjack() {
     setMessage("");
     setDealerRevealed(false);
     setGameStarted(true);
+    setAwaitingPlayerInput(true);
 
     const playerTotal = handValue(playerHand);
     const dealerTotal = handValue(dealerHand);
 
     if (playerTotal === 21) {
       setDealerRevealed(true);
-      setGameStarted(false);
-      setMessage(dealerTotal === 21 ? "Push!" : "Blackjack! Player wins!");
+
+      if(dealerTotal === 21) {
+        setChips(c => c + wager); // push, bet returned
+        setMessage("Push! Both player and dealer have Blackjack!");
+      }else {
+        const winnings = Math.floor(bet * 1.5);
+        setChips(c => c+ wager + winnings);
+        setMessage(`Blackjack! You win ${winnings+wager} chips!`);
+      }
+
       await new Promise(resolve => setTimeout(resolve, 1500));
       setShowPopup(true);
+      setGameStarted(false);
+    } else {
+      setAwaitingPlayerInput(true);
     }
   }
-
+  
   async function playerHit() {
     if (handValue(player) >= 21) return;
+
+    setAwaitingPlayerInput(false);
 
     const newDeck = [...deck];
     const newCard = newDeck.pop();
@@ -61,21 +92,21 @@ export function useBlackjack() {
     const total = handValue(newPlayerHand);
 
     if (total === 21) {
-      setDealerRevealed(true);
-      setMessage("Player hits 21! Player wins!");
-      setGameStarted(false);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setShowPopup(true);
+      await playerStand(bet, newPlayerHand);
     } else if (total > 21) {
       setDealerRevealed(true);
-      setMessage("Player busts! Dealer wins!");
-      setGameStarted(false);
+      setMessage("Player busts! You lose your bet.");
       await new Promise(resolve => setTimeout(resolve, 2000));
       setShowPopup(true);
+      setGameStarted(false);
+    } else {
+      setAwaitingPlayerInput(true);
     }
   }
 
-  async function playerStand() {
+  async function playerStand(wager = bet, hand = player) {
+    setAwaitingPlayerInput(false);
+
     let newDeck = [...deck];
     let dealerHand = [...dealer];
 
@@ -90,15 +121,26 @@ export function useBlackjack() {
       await new Promise(resolve => setTimeout(resolve, 800));
     }
 
-    const playerTotal = handValue(player);
+    const playerTotal = handValue(hand);
     const dealerTotal = handValue(dealerHand);
 
     let resultMessage;
-    if (dealerTotal > 21) resultMessage = "Dealer busts! Player wins!";
-    else if (playerTotal > 21) resultMessage = "Player busts! Dealer wins!";
-    else if (playerTotal > dealerTotal) resultMessage = "Player wins!";
-    else if (playerTotal < dealerTotal) resultMessage = "Dealer wins!";
-    else resultMessage = "Push (tie)!";
+    if (dealerTotal > 21){
+      setChips( c=> c + wager * 2 );
+      resultMessage = `Dealer busts! You win ${wager *2 } chips!`;
+    } 
+    else if (playerTotal > 21){
+      resultMessage = `Player busts! You lose your bet of ${wager} chips.`;
+    }
+    else if (playerTotal > dealerTotal){
+      setChips( c=> c + wager * 2 );
+      resultMessage = `You win ${wager * 2} chips!`;
+    }
+    else if (playerTotal < dealerTotal) resultMessage = `Dealer wins! You lose your bet of ${wager} chips.`;
+    else{
+      setChips( c=> c + wager );
+      resultMessage = "Push, bet returned!";
+    } 
 
     setDealer([...dealerHand]);
     setDeck([...newDeck]);
@@ -111,6 +153,10 @@ export function useBlackjack() {
 
   async function playerDouble() {
     if (!gameStarted || !canDouble(player)) return;
+    if (chips < bet) {
+      setMessage("Not enough chips to double down!");
+      return;
+    }
 
     let newDeck = [...deck];
     const newCard = newDeck.pop();
@@ -119,22 +165,32 @@ export function useBlackjack() {
     setDeck([...newDeck]);
     setPlayer([...newPlayerHand]);
     setDealerRevealed(true);
-    setGameStarted(false);
 
     await new Promise(resolve => setTimeout(resolve, 800));
+
+    const doubleWager = bet * 2;
+
 
     if (handValue(newPlayerHand) > 21) {
       setMessage("Player busts after doubling! Dealer wins!");
       await new Promise(resolve => setTimeout(resolve, 800));
       setShowPopup(true);
+      setGameStarted(false);
       return;
     }
 
-    await playerStand();
+    await playerStand(doubleWager, newPlayerHand);
   }
 
   async function playerSplit() {
     if (player.length !== 2 || player[0].rank !== player[1].rank) return;
+    if (chips < bet) {
+      setMessage("Not enough chips to split!");
+      return;
+    }
+
+    setAwaitingPlayerInput(false);
+    setChips(c => c - bet);
 
     const newDeck = [...deck];
     const firstHand = [player[0], newDeck.pop()];
@@ -143,12 +199,17 @@ export function useBlackjack() {
     setSplitActive(true);
     setDeck(newDeck);
     setPlayerHands([firstHand, secondHand]);
+    setHandBets([bet, bet]);
     setActiveHandIndex(0);
     setPlayer([]);
     setMessage("Playing Hand 1...");
+    setAwaitingPlayerInput(true);
+
   }
 
   async function playerHitSplit(index) {
+    setAwaitingPlayerInput(false);
+
     const newDeck = [...deck];
     const newCard = newDeck.pop();
  
@@ -163,25 +224,41 @@ export function useBlackjack() {
     if (handTotal > 21) {
       setMessage(`Hand ${index + 1} busts!`);
       await new Promise(res => setTimeout(res, 800));
-      nextSplitHand(index, newHands, newDeck);
+      nextSplitHand(index, newHands, newDeck, handBets);
     } else if (handTotal === 21) {
       setMessage(`Hand ${index + 1} hits 21!`);
       await new Promise(res => setTimeout(res, 800));
-      nextSplitHand(index, newHands, newDeck);
+      nextSplitHand(index, newHands, newDeck, handBets);
+    } else {
+      setAwaitingPlayerInput(true); // still this hand's turn
     }
   }
 
 
   async function playerStandSplit(index) {
+    setAwaitingPlayerInput(false);
     setMessage(`Hand ${index + 1} stands.`);
     await new Promise(res => setTimeout(res, 400));
-    nextSplitHand(index, playerHands, deck);
+    nextSplitHand(index, playerHands, deck, handBets);
   }
 
 
   async function playerDoubleSplit(index) {
     if (!canDouble(playerHands[index])) return;
- 
+    if (chips < handBets[index]) {
+      setMessage("Not enough chips to double down!");
+      return;
+    }
+
+    setAwaitingPlayerInput(false);
+
+    const additionalWager = handBets[index];
+    setChips(c => c - additionalWager);
+
+    const newHandBets = [...handBets];
+    newHandBets[index] = handBets[index] * 2;
+    setHandBets(newHandBets);
+
     const newDeck = [...deck];
     const newCard = newDeck.pop();
  
@@ -199,7 +276,7 @@ export function useBlackjack() {
     );
  
     await new Promise(res => setTimeout(res, 800));
-    nextSplitHand(index, newHands, newDeck);
+    nextSplitHand(index, newHands, newDeck, handBets);
   }
 
 
@@ -208,6 +285,7 @@ export function useBlackjack() {
       setMessage(`Hand ${index + 1} done! Moving to Hand ${index + 2}...`);
       await new Promise(res => setTimeout(res, 400));
       setActiveHandIndex(index + 1);
+      setAwaitingPlayerInput(true);
       setMessage(`Playing Hand ${index + 2}...`);
     } else {
       setMessage("Dealer's turn...");
@@ -216,7 +294,7 @@ export function useBlackjack() {
     }
   }
 
-  async function dealerPlayAfterSplit() {
+  async function dealerPlayAfterSplit(hands, currentDeck, bets = handBets) {
     let newDeck = [...deck];
     let dealerHand = [...dealer];
 
@@ -229,16 +307,22 @@ export function useBlackjack() {
     }
 
     setDeck(newDeck);
-
+    let totalReturned = 0;
     const results = playerHands.map((hand, i) => {
       const playerTotal = handValue(hand);
       const dealerTotal = handValue(dealerHand);
+      const wager = bets[i];
 
       if (playerTotal > 21) return `Hand ${i + 1}: Bust`;
-      if (dealerTotal > 21) return `Hand ${i + 1}: Dealer busts — Player wins!`;
-      if (playerTotal > dealerTotal) return `Hand ${i + 1}: Player wins!`;
-      if (playerTotal < dealerTotal) return `Hand ${i + 1}: Dealer wins!`;
-      return `Hand ${i + 1}: Push (tie)`;
+      if (dealerTotal > 21 || playerTotal > dealerTotal){
+        totalReturned += wager * 2;
+        return `Hand ${i + 1}: Win (+${wager * 2 })`;
+      } 
+      if (playerTotal < dealerTotal) {
+        return `Hand ${i + 1}: Dealer wins`;
+      }
+      totalReturned += wager;
+      return `Hand ${i + 1}: Push`;
     });
 
     setMessage(results.join(" | "));
@@ -249,22 +333,36 @@ export function useBlackjack() {
 
   function playAgain() {
     setShowPopup(false);
-    startGame();
+    setGameStarted(false);
+    setAwaitingPlayerInput(false);
+    setPlayer([]);
+    setDealer([]);
+    setPlayerHands([]);
+    setHandBets([]);
+    setActiveHandIndex(0);
+    setSplitActive(false);
+    setDealerRevealed(false);
+    setMessage("");
   }
 
   return {
-    // state
+    // round state
     player,
     dealer,
     message,
     dealerRevealed,
     gameStarted,
+    awaitingPlayerInput,
     showPopup,
     playerHands,
     activeHandIndex,
     splitActive,
+    // betting state
+    chips,
+    bet,
+    handBets,
     // actions
-    startGame,
+    placeBet,
     playerHit,
     playerStand,
     playerDouble,

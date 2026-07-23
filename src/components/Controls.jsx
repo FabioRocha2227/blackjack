@@ -2,13 +2,13 @@ import { canDouble } from "../utils/doubleRules.js";
 import { memo } from "react";
 
 function Controls({
-  gameStarted,
-  showPopup,
   splitActive,
   player,
   playerHands,
   activeHandIndex,
-  onStart,
+  chips,
+  bet,
+  handBets,
   onHit,
   onStand,
   onDouble,
@@ -19,29 +19,27 @@ function Controls({
 }) {
   return (
     <div className="controls">
-      {!gameStarted && !showPopup && <button onClick={onStart}>Start Game</button>}
+      {!splitActive ? (
+        <>
+          <button onClick={onHit}>Hit</button>
+          {/* onStand now takes optional (wager, hand) params for the double-down path -
+              call it with no arguments here, or the click event would be passed as `wager`. */}
+          <button onClick={() => onStand()}>Stand</button>
 
-      {gameStarted && !showPopup && (
-        !splitActive ? (
-          <>
-            <button onClick={onHit}>Hit</button>
-            <button onClick={onStand}>Stand</button>
+          {canDouble(player) && chips >= bet && <button onClick={onDouble}>Double</button>}
 
-            {canDouble(player) && <button onClick={onDouble}>Double</button>}
-
-            {player.length === 2 && player[0].rank === player[1].rank && (
-              <button onClick={onSplit}>Split</button>
-            )}
-          </>
-        ) : (
-          <>
-            <button onClick={() => onHitSplit(activeHandIndex)}>Hit</button>
-            <button onClick={() => onStandSplit(activeHandIndex)}>Stand</button>
-            {canDouble(playerHands[activeHandIndex]) && (
-              <button onClick={() => onDoubleSplit(activeHandIndex)}>Double</button>
-            )}
-          </>
-        )
+          {player.length === 2 && player[0].rank === player[1].rank && chips >= bet && (
+            <button onClick={onSplit}>Split</button>
+          )}
+        </>
+      ) : (
+        <>
+          <button onClick={() => onHitSplit(activeHandIndex)}>Hit</button>
+          <button onClick={() => onStandSplit(activeHandIndex)}>Stand</button>
+          {canDouble(playerHands[activeHandIndex]) && chips >= handBets[activeHandIndex] && (
+            <button onClick={() => onDoubleSplit(activeHandIndex)}>Double</button>
+          )}
+        </>
       )}
     </div>
   );
