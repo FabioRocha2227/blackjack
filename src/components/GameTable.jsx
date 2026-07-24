@@ -4,11 +4,48 @@ import PlayerArea from "./PlayerArea.jsx";
 import Controls from "./Controls.jsx";
 import ResultPopup from "./ResultPopup.jsx";
 import BettingPanel from "./BettingPanel.jsx";
+import { saveLeaderboardEntry } from "../utils/leaderboard.js";
+import { useEffect, useRef } from "react";
+
 
 
 export default function GameTable({ profile, onExit }) {
-  const game = useBlackjack(profile?.chips ?? 500);
+  const game = useBlackjack(profile?.chips ?? 0);
 
+  const savedRef = useRef(false);
+  const isGameOver = game.chips <= 0 && !game.gameStarted && !game.showPopup;
+
+  function buildEntry(reason) {
+    const startingChips = profile?.chips ?? 0;
+    const durationMs = profile?.startedAt ? Date.now() - profile.startedAt : 0;
+
+    return {
+      name: profile?.name ?? "Player",
+      startingChips,
+      finalChips: game.chips,
+      netProfitLoss: game.chips - startingChips,
+      durationMs,
+      endedAt: new Date().toISOString(),
+      reason, // "out_of_chips" | "exited"
+    };
+  }
+
+  //auto save when player runs oout of chips
+
+  useEffect(() => {
+    if (isGameOver && !savedRef.current) {
+      savedRef.current = true;
+      saveLeaderboardEntry(buildEntry("out_of_chips"));
+    }
+  }, [isGameOver]);
+
+  function handleExit() {
+    if (!savedRef.current) {
+      savedRef.current = true;
+      saveLeaderboardEntry(buildEntry("exited"));
+    }
+    onExit();
+  }
   return (
     <div className="table-container">
       <header className="table-header table-header--game">
@@ -18,7 +55,7 @@ export default function GameTable({ profile, onExit }) {
               {profile.name} · {game.chips} chips
             </p>
           )}
-        <button className="menu-link" onClick={onExit}>
+        <button className="menu-link" onClick={handleExit}>
           Menu
         </button>
       </header>
@@ -31,11 +68,18 @@ export default function GameTable({ profile, onExit }) {
         splitActive={game.splitActive}
         activeHandIndex={game.activeHandIndex}
       />
-
-
-      {!game.gameStarted && !game.showPopup && (
+      
+      {isGameOver ? (
+        <div className="betting-panel">
+          <p className="chips-readout">Game over — you're out of chips.</p>
+          <p className="game-subtitle">
+            Saved to the leaderboard. Head back to the menu to start a new game.
+          </p>
+          <button onClick={handleExit}>Return to Menu</button>
+        </div>
+      ) : !game.gameStarted && !game.showPopup ? (
         <BettingPanel chips={game.chips} lastBet={game.bet} onDeal={game.placeBet} />
-      )}
+      ) : null}
 
       {game.gameStarted && !game.showPopup && game.awaitingPlayerInput && (
         <Controls

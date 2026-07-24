@@ -2,12 +2,9 @@ npm run dev - para correr jogo
 
 TODO
 
-adicionar apostas e balance
 adicionar a cheat sheet para aprender a jogar
 
 
 NOTAS IMPORTANTES:
 
-adicionar split option
 visualmente alterar o doouble (carta dada ficar na horizontal)
-erro split dealer bj and han bj. dealer wins (needs more testing)

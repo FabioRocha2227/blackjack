@@ -18,7 +18,7 @@ export default function App() {
   const [profile, setProfile] = useState(null); // { name, chips }
 
   function handleStartGame({ name, chips }) {
-    setProfile({ name, chips });
+    setProfile({ name, chips, startedAt: Date.now() });
     setScreen(SCREEN.GAME);
   }
 
