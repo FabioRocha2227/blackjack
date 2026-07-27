@@ -50,6 +50,8 @@ export default function GameTable({ profile, onExit }) {
     <div className="table-container">
       <header className="table-header table-header--game">
           <h1 className="game-title">♠ Blackjack</h1>
+          <p className="table-rule">Dealer hits on 16</p>
+
           {profile && (
             <p className="game-subtitle">
               {profile.name} · {game.chips} chips

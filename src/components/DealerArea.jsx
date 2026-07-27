@@ -12,7 +12,6 @@ function DealerArea({ dealer, dealerRevealed }) {
         flipIndexes={dealerRevealed ? [1] : []}
         valueLabel={dealerRevealed ? `Value: ${handValue(dealer)}` : "Value: ?"}
       />
-      <p className="table-rule">Dealer hits on 16</p>
     </div>
   );
 }
