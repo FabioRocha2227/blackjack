@@ -60,14 +60,16 @@ export default function GameTable({ profile, onExit }) {
         </button>
       </header>
 
-      <DealerArea dealer={game.dealer} dealerRevealed={game.dealerRevealed} />
+      <div className="table-hands">
+        <DealerArea dealer={game.dealer} dealerRevealed={game.dealerRevealed} />
 
-      <PlayerArea
-        player={game.player}
-        playerHands={game.playerHands}
-        splitActive={game.splitActive}
-        activeHandIndex={game.activeHandIndex}
-      />
+        <PlayerArea
+          player={game.player}
+          playerHands={game.playerHands}
+          splitActive={game.splitActive}
+          activeHandIndex={game.activeHandIndex}
+        />
+      </div>
       
       {isGameOver ? (
         <div className="betting-panel">
