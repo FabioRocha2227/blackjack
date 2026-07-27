@@ -295,7 +295,7 @@ export function useBlackjack(initialChips = 500) {
   }
 
   async function dealerPlayAfterSplit(hands, currentDeck, bets = handBets) {
-    let newDeck = [...deck];
+    let newDeck = [...currentDeck];
     let dealerHand = [...dealer];
 
     setDealerRevealed(true);
@@ -308,7 +308,7 @@ export function useBlackjack(initialChips = 500) {
 
     setDeck(newDeck);
     let totalReturned = 0;
-    const results = playerHands.map((hand, i) => {
+    const results = hands.map((hand, i) => {
       const playerTotal = handValue(hand);
       const dealerTotal = handValue(dealerHand);
       const wager = bets[i];
