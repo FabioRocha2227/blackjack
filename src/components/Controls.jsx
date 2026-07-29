@@ -1,5 +1,6 @@
 import { canDouble } from "../utils/doubleRules.js";
-import { memo } from "react";
+import { memo, useState } from "react";
+import { getBasicStrategyAction, ACTION_LABELS } from "../utils/strategy.js";
 
 function Controls({
   splitActive,
@@ -9,6 +10,7 @@ function Controls({
   chips,
   bet,
   handBets,
+  dealerUpCard,
   onHit,
   onStand,
   onDouble,
@@ -17,30 +19,81 @@ function Controls({
   onStandSplit,
   onDoubleSplit,
 }) {
-  return (
-    <div className="controls">
-      {!splitActive ? (
-        <>
-          <button onClick={onHit}>Hit</button>
-          {/* onStand now takes optional (wager, hand) params for the double-down path -
-              call it with no arguments here, or the click event would be passed as `wager`. */}
-          <button onClick={() => onStand()}>Stand</button>
+  const [showStrategy, setShowStrategy] = useState(false);
 
-          {canDouble(player) && chips >= bet && <button onClick={onDouble}>Double</button>}
+  const currentHand = splitActive
+  ? playerHands[activeHandIndex]
+  : player;
 
-          {player.length === 2 && player[0].rank === player[1].rank && chips >= bet && (
-            <button onClick={onSplit}>Split</button>
+  const strategyAction =
+    currentHand?.length >= 2 && dealerUpCard
+      ? getBasicStrategyAction(currentHand, dealerUpCard, {
+          canSplit:
+            currentHand.length === 2 &&
+            currentHand[0].rank === currentHand[1].rank,
+          canDoubleNow: canDouble(currentHand),
+        })
+      : null;
+
+   return (
+    <div className="controls-wrapper">
+      
+
+      <div className="controls">
+        {!splitActive ? (
+          <>
+            <button onClick={onHit}>Hit</button>
+
+            <button onClick={() => onStand()}>
+              Stand
+            </button>
+
+            {canDouble(player) && chips >= bet && (
+              <button onClick={onDouble}>Double</button>
+            )}
+
+            {player.length === 2 &&
+              player[0].rank === player[1].rank &&
+              chips >= bet && (
+                <button onClick={onSplit}>Split</button>
+              )}
+          </>
+        ) : (
+          <>
+            <button onClick={() => onHitSplit(activeHandIndex)}>
+              Hit
+            </button>
+
+            <button onClick={() => onStandSplit(activeHandIndex)}>
+              Stand
+            </button>
+
+            {canDouble(playerHands[activeHandIndex]) &&
+              chips >= handBets[activeHandIndex] && (
+                <button
+                  onClick={() => onDoubleSplit(activeHandIndex)}
+                >
+                  Double
+                </button>
+              )}
+          </>
+        )}
+        <div className="strategy-panel">
+          <button
+            className="strategy-toggle"
+            onClick={() => setShowStrategy((prev) => !prev)}
+          >
+            {showStrategy ? "Hide Strategy ▲" : "Show Strategy ▼"}
+          </button>
+
+          {showStrategy && strategyAction && (
+            <div className="strategy-content">
+              <strong>Recommended move:</strong>{" "}
+              {ACTION_LABELS?.[strategyAction] ?? strategyAction}
+            </div>
           )}
-        </>
-      ) : (
-        <>
-          <button onClick={() => onHitSplit(activeHandIndex)}>Hit</button>
-          <button onClick={() => onStandSplit(activeHandIndex)}>Stand</button>
-          {canDouble(playerHands[activeHandIndex]) && chips >= handBets[activeHandIndex] && (
-            <button onClick={() => onDoubleSplit(activeHandIndex)}>Double</button>
-          )}
-        </>
-      )}
+        </div>  
+      </div>
     </div>
   );
 }

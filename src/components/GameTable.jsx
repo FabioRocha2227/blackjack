@@ -94,6 +94,7 @@ export default function GameTable({ profile, onExit }) {
           chips={game.chips}
           bet={game.bet}
           handBets={game.handBets}
+          dealerUpCard={game.dealer?.[0]}
           onHit={game.playerHit}
           onStand={game.playerStand}
           onDouble={game.playerDouble}

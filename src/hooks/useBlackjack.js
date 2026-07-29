@@ -18,7 +18,7 @@ export function useBlackjack(initialChips = 500) {
   const [playerHands, setPlayerHands] = useState([]); // hands after a split
   const [activeHandIndex, setActiveHandIndex] = useState(0); // which split hand is being played
   const [splitActive, setSplitActive] = useState(false);
-
+  const [showStrategy, setShowStrategy] = useState(false);
   const [chips, setChips] = useState(initialChips);
   const [bet, setBet] = useState(0);
   const [handBets, setHandBets] = useState([]); // bets for each hand after a split
