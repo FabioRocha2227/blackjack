@@ -488,6 +488,16 @@
   contain: layout paint;
 }
 
+.popup-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.popup-buttons button {
+  flex: 1;
+}
+
 .popup h2 {
   margin: 0 0 20px;
   font-family: Georgia, "Times New Roman", serif;

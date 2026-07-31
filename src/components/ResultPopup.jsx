@@ -6,7 +6,7 @@ export default function ResultPopup({ show, message, onPlayAgain, onRepeatBet })
       <div className="popup">
         <h2>{message}</h2>
         <div className="popup-buttons">
-          <button onClick={onPlayAgain}>Play Again</button>
+          <button onClick={onPlayAgain}>New bet</button>
           <button onClick={onRepeatBet}>Repeat Bet</button>
         </div>
       </div>
