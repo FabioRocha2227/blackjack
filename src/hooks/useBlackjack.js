@@ -344,6 +344,22 @@ export function useBlackjack(initialChips = 500) {
     setDealerRevealed(false);
     setMessage("");
   }
+  function repeatBet() {
+    if (bet <= 0 || bet > chips) {
+      setMessage("Cannot repeat bet: invalid amount or insufficient chips.");
+      return;
+    }
+    setShowPopup(false);
+    setPlayer([]);
+    setDealer([]);
+    setPlayerHands([]);
+    setHandBets([]);
+    setActiveHandIndex(0);
+    setSplitActive(false);
+    setDealerRevealed(false);
+    setMessage("");
+    placeBet(bet);
+  }
 
   return {
     // round state
@@ -371,5 +387,6 @@ export function useBlackjack(initialChips = 500) {
     playerStandSplit,
     playerDoubleSplit,
     playAgain,
+    repeatBet,
   };
 }

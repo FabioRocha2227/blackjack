@@ -105,7 +105,7 @@ export default function GameTable({ profile, onExit }) {
         />
       )}
 
-      <ResultPopup show={game.showPopup} message={game.message} onPlayAgain={game.playAgain} />
+      <ResultPopup show={game.showPopup} message={game.message} onPlayAgain={game.playAgain} onRepeatBet={game.repeatBet} />
     </div>
   );
 }
