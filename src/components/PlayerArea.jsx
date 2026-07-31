@@ -2,10 +2,16 @@ import Hand from "./Hand.jsx";
 import { handValue } from "../utils/deck.js";
 import { memo } from "react";
 
-function PlayerArea({ player, playerHands, splitActive, activeHandIndex }) {
+function PlayerArea({ player, playerHands, splitActive, activeHandIndex, lastBet }) {
   return (
     <div className="player-area">
       <h2>Your Hand{splitActive ? "s" : ""}</h2>
+      
+      {lastBet > 0 && (
+        <div className="bet-value">
+          <p>Current Bet: ${lastBet}</p>
+        </div>
+      )}
 
       {!splitActive ? (
         <Hand cards={player} valueLabel={`Value: ${handValue(player)}`} />
@@ -19,7 +25,8 @@ function PlayerArea({ player, playerHands, splitActive, activeHandIndex }) {
           </div>
         ))
       )}
-    </div>
+    </div>      
+
   );
 }
 

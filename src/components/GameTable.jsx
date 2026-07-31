@@ -70,6 +70,8 @@ export default function GameTable({ profile, onExit }) {
           playerHands={game.playerHands}
           splitActive={game.splitActive}
           activeHandIndex={game.activeHandIndex}
+          chips={game.chips}
+          lastBet={game.bet}
         />
       </div>
       
