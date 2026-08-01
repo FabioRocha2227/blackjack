@@ -36,11 +36,6 @@ export function splitResults(hands, dealerHand, bets) {
   return { totalReturned, results };
 }
 
-export function insuranceReturn(insuranceBet) {
-  // Insurance pays 2:1; return includes original stake
-  return insuranceBet * 3;
-}
-
 export function surrenderReturn(wager) {
   return Math.floor(wager / 2);
 }
@@ -50,4 +45,5 @@ export default {
   winReturn,
   pushReturn,
   splitResults,
+  surrenderReturn,
 };

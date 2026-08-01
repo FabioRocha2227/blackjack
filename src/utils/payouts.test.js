@@ -1,6 +1,6 @@
 // Plain-node test runner — no framework needed.
 // Run with: node src/utils/payouts.test.js
-import { blackjackReturn, winReturn, pushReturn, splitResults, insuranceReturn, surrenderReturn } from "./payouts.js";
+import { blackjackReturn, winReturn, pushReturn, splitResults, surrenderReturn } from "./payouts.js";
 import { handValue } from "./deck.js";
 
 const card = (rank, suit = "Spades") => ({ rank, suit });
@@ -46,9 +46,6 @@ const res2 = splitResults(hands2, dealer18, bets2);
 // expected: hand1 win -> +20, hand2 lose -> 0, hand3 push -> +2
 test("mixed split returns total", res2.totalReturned, 22);
 test("hand messages", res2.results.join(" | "), "Hand 1: Win (+20) | Hand 2: Dealer wins | Hand 3: Push");
-
-console.log("\ninsuranceReturn()");
-test("insurance 5 -> 15 (2:1 + stake)", insuranceReturn(5), 15);
 
 console.log("\nsurrenderReturn()");
 test("surrender 11 -> 5 (floor)", surrenderReturn(11), 5);

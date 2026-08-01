@@ -1,6 +1,5 @@
 import { canDouble } from "../utils/doubleRules.js";
-import { memo, useState } from "react";
-import { getBasicStrategyAction, ACTION_LABELS } from "../utils/strategy.js";
+import { memo } from "react";
 
 function Controls({
   splitActive,
@@ -18,22 +17,12 @@ function Controls({
   onHitSplit,
   onStandSplit,
   onDoubleSplit,
+  onSurrender,
+  showStrategy,
 }) {
-  const [showStrategy, setShowStrategy] = useState(false);
-
   const currentHand = splitActive
   ? playerHands[activeHandIndex]
   : player;
-
-  const strategyAction =
-    currentHand?.length >= 2 && dealerUpCard
-      ? getBasicStrategyAction(currentHand, dealerUpCard, {
-          canSplit:
-            currentHand.length === 2 &&
-            currentHand[0].rank === currentHand[1].rank,
-          canDoubleNow: canDouble(currentHand),
-        })
-      : null;
 
    return (
     <div className="controls-wrapper">
@@ -47,6 +36,13 @@ function Controls({
             <button onClick={() => onStand()}>
               Stand
             </button>
+
+            {/* Surrender available as initial action on two-card hands */}
+            {player.length === 2 && (
+              <button onClick={onSurrender}>Surrender</button>
+            )}
+
+            
 
             {canDouble(player) && chips >= bet && (
               <button onClick={onDouble}>Double</button>
@@ -78,21 +74,7 @@ function Controls({
               )}
           </>
         )}
-        <div className="strategy-panel">
-          <button
-            className="strategy-toggle"
-            onClick={() => setShowStrategy((prev) => !prev)}
-          >
-            {showStrategy ? "Hide Strategy ▲" : "Show Strategy ▼"}
-          </button>
-
-          {showStrategy && strategyAction && (
-            <div className="strategy-content">
-              <strong>Recommended move:</strong>{" "}
-              {ACTION_LABELS?.[strategyAction] ?? strategyAction}
-            </div>
-          )}
-        </div>  
+        
       </div>
     </div>
   );

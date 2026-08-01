@@ -121,13 +121,15 @@
 }
 
 .table-header--game {
-  width: min(100%, 1180px);
+  width: 100%;
+  text-align: center;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  text-align: center;
+
+  margin-top: 10px;
 }
 
 .table-hands {
@@ -902,3 +904,78 @@
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(6px);
 }
+
+/* Header controls (menu + strategy toggle) */
+.header-controls {
+  position: absolute;
+
+  top: 24px;
+  right: 32px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  z-index: 100;
+}
+.menu-link {
+  /* keep legacy menu-link style for any other uses */
+  position: absolute;
+  top: clamp(12px, 2vw, 18px);
+  right: clamp(12px, 2vw, 18px);
+}
+
+.header-controls .menu-button,
+.header-controls .strategy-header-toggle {
+  padding: 10px 16px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255, 233, 172, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+
+  color: rgba(255, 245, 214, 0.92);
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.header-controls .strategy-header-toggle[aria-pressed="true"] {
+  background: rgba(255, 214, 102, 0.12);
+  color: #102213;
+}
+
+/* Strategy sidebar drawer */
+.strategy-sidebar {
+  position: fixed;
+  right: 12px;
+  top: 80px;
+  width: min(320px, 28vw);
+  max-width: 360px;
+  height: 120px;
+  background: rgba(6, 27, 17, 0.96);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+  padding: 12px;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: auto;
+}
+.strategy-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.strategy-close {
+  background: transparent;
+  border: none;
+  color: rgba(255,245,214,0.9);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.strategy-content {
+  padding: 8px 4px;
+}
+.strategy-empty { color: rgba(255,255,255,0.6); }
