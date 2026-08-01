@@ -330,6 +330,7 @@
   animation: dropRotate 0.35s ease-out both;
   pointer-events: none;
 }
+
 @keyframes dropRotate {
   0% {
     opacity: 0;
@@ -522,12 +523,15 @@
 
 /* --- Minimize / restore for the result popup --- */
 
-.popup-minimize {
+.popup button.popup-minimize {
   position: absolute;
   top: 16px;
   right: 16px;
   width: 32px;
   height: 32px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -536,14 +540,25 @@
   background: rgba(255, 255, 255, 0.06);
   color: rgba(255, 240, 203, 0.85);
   font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
   line-height: 1;
+  box-shadow: none;
   cursor: pointer;
   transition: background 180ms ease, border-color 180ms ease;
 }
 
-.popup-minimize:hover {
+.popup button.popup-minimize:hover {
   background: rgba(255, 233, 172, 0.12);
   border-color: rgba(255, 233, 172, 0.5);
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+.popup button.popup-minimize:active {
+  transform: none;
 }
 
 .popup-restore {
