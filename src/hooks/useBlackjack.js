@@ -42,9 +42,10 @@ export function useBlackjack(initialChips = 500) {
 
     // Uncomment the next line to force a split test hand.
     //const playerHand = [{ rank: "4", suit: "Spades" }, { rank: "4", suit: "Diamonds" }];
-    const playerHand = [{ rank: "8", suit: "Spades" }, { rank: "3", suit: "Diamonds" }];
+    // Uncomment the next line to force a double test hand.
+    //const playerHand = [{ rank: "8", suit: "Spades" }, { rank: "3", suit: "Diamonds" }];
 
-    //const playerHand = [newDeck.pop(), newDeck.pop()];
+    const playerHand = [newDeck.pop(), newDeck.pop()];
     const dealerHand = [newDeck.pop(), newDeck.pop()];
 
     setDeck(newDeck);
