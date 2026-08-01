@@ -330,7 +330,6 @@
   animation: dropRotate 0.35s ease-out both;
   pointer-events: none;
 }
-
 @keyframes dropRotate {
   0% {
     opacity: 0;
@@ -495,6 +494,7 @@
 }
 
 .popup {
+  position: relative;
   width: min(92vw, 520px);
   padding: 30px 30px 26px;
   border-radius: 26px;
@@ -518,6 +518,60 @@
 
 .popup-buttons button {
   flex: 1;
+}
+
+/* --- Minimize / restore for the result popup --- */
+
+.popup-minimize {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 233, 172, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 240, 203, 0.85);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.popup-minimize:hover {
+  background: rgba(255, 233, 172, 0.12);
+  border-color: rgba(255, 233, 172, 0.5);
+}
+
+.popup-restore {
+  position: fixed;
+  right: clamp(16px, 3vw, 28px);
+  bottom: clamp(16px, 3vw, 28px);
+  z-index: 1000;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 233, 172, 0.35);
+  color: #102213;
+  background: linear-gradient(180deg, #ffe58f 0%, #f4bf42 100%);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  animation: restoreBounce 1.8s ease-in-out infinite;
+}
+
+.popup-restore:hover {
+  filter: brightness(1.05);
+}
+
+@keyframes restoreBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
 .popup h2 {

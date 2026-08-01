@@ -27,12 +27,12 @@ export function useBlackjack(initialChips = 500) {
 
   //Betting
   function placeBet(amount) {
-    if(gameStarted) return; 
+    if (gameStarted) return;
 
     const wager = Math.floor(Number(amount));
-    if(!Number.isFinite(wager) || (wager <= 0) || wager > chips) return;
+    if (!Number.isFinite(wager) || wager <= 0 || wager > chips) return;
 
-    setChips( c => c- wager);
+    setChips((c) => c - wager);
     setBet(wager);
     deal(wager);
   }
@@ -67,13 +67,14 @@ export function useBlackjack(initialChips = 500) {
     if (playerTotal === 21) {
       setDealerRevealed(true);
 
-      if(dealerTotal === 21) {
-        setChips(c => c + wager); // push, bet returned
+      if (dealerTotal === 21) {
+        setChips((c) => c + wager); // push, bet returned
         setMessage("Push! Both player and dealer have Blackjack!");
-      }else {
-        const winnings = Math.floor(bet * 1.5);
-        setChips(c => c+ wager + winnings);
-        setMessage(`Blackjack! You win ${winnings+wager} chips!`);
+      } else {
+        // Blackjack pays 3:2 on the original wager amount
+        const winnings = Math.floor(wager * 1.5);
+        setChips((c) => c + wager + winnings);
+        setMessage(`Blackjack! You win ${winnings + wager} chips!`);
       }
 
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -132,15 +133,16 @@ export function useBlackjack(initialChips = 500) {
     const dealerTotal = handValue(dealerHand);
 
     let resultMessage;
-    if (dealerTotal > 21){
-      setChips( c=> c + wager * 2 );
-      resultMessage = `Dealer busts! You win ${wager *2 } chips!`;
-    } 
+    if (dealerTotal > 21) {
+      // player wins: return wager + winnings equal to wager
+      setChips((c) => c + wager * 2);
+      resultMessage = `Dealer busts! You win ${wager * 2} chips!`;
+    }
     else if (playerTotal > 21){
       resultMessage = `Player busts! You lose your bet of ${wager} chips.`;
     }
-    else if (playerTotal > dealerTotal){
-      setChips( c=> c + wager * 2 );
+    else if (playerTotal > dealerTotal) {
+      setChips((c) => c + wager * 2);
       resultMessage = `You win ${wager * 2} chips!`;
     }
     else if (playerTotal < dealerTotal) resultMessage = `Dealer wins! You lose your bet of ${wager} chips.`;
@@ -169,6 +171,8 @@ export function useBlackjack(initialChips = 500) {
     const newCard = newDeck.pop();
     const newPlayerHand = [...player, newCard];
 
+    // deduct the additional wager immediately
+    setChips((c) => c - bet);
     setDeck([...newDeck]);
     setPlayer([...newPlayerHand]);
     setDealerRevealed(true);
@@ -181,7 +185,7 @@ export function useBlackjack(initialChips = 500) {
 
     if (handValue(newPlayerHand) > 21) {
       setMessage("Player busts after doubling! Dealer wins!");
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, 800));
       setShowPopup(true);
       setGameStarted(false);
       return;
@@ -198,7 +202,8 @@ export function useBlackjack(initialChips = 500) {
     }
 
     setAwaitingPlayerInput(false);
-    setChips(c => c - bet);
+    // deduct the additional wager for the second hand
+    setChips((c) => c - bet);
 
     const newDeck = [...deck];
     const firstHand = [player[0], newDeck.pop()];
@@ -329,7 +334,7 @@ export function useBlackjack(initialChips = 500) {
       if (playerTotal > 21) return `Hand ${i + 1}: Bust`;
       if (dealerTotal > 21 || playerTotal > dealerTotal){
         totalReturned += wager * 2;
-        return `Hand ${i + 1}: Win (+${wager * 2 })`;
+        return `Hand ${i + 1}: Win (+${wager * 2})`;
       } 
       if (playerTotal < dealerTotal) {
         return `Hand ${i + 1}: Dealer wins`;
@@ -337,6 +342,9 @@ export function useBlackjack(initialChips = 500) {
       totalReturned += wager;
       return `Hand ${i + 1}: Push`;
     });
+
+    // add chips returned for split hands
+    if (totalReturned > 0) setChips((c) => c + totalReturned);
 
     setMessage(results.join(" | "));
     await new Promise(res => setTimeout(res, 1000));

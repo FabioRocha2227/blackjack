@@ -2,5 +2,3 @@ npm run dev - para correr jogo
 
 NOTAS IMPORTANTES:
 
-visualmente alterar o doouble (carta dada ficar na horizontal)
-
