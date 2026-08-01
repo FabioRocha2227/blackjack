@@ -1,7 +1,7 @@
 import Card from "./Card.jsx";
 import { memo } from "react";
 
-function Hand({ cards, hiddenIndexes = [], flipIndexes = [], valueLabel }) {
+function Hand({ cards, hiddenIndexes = [], flipIndexes = [], rotatedIndexes = [], valueLabel }) {
   return (
     <>
       <div className="hand">
@@ -11,6 +11,7 @@ function Hand({ cards, hiddenIndexes = [], flipIndexes = [], valueLabel }) {
             card={c}
             hidden={hiddenIndexes.includes(i)}
             flip={flipIndexes.includes(i)}
+            rotated={rotatedIndexes.includes(i)}
           />
         ))}
       </div>

@@ -72,6 +72,8 @@ export default function GameTable({ profile, onExit }) {
           activeHandIndex={game.activeHandIndex}
           chips={game.chips}
           lastBet={game.bet}
+          doubled={game.doubled}       
+          handDoubled={game.handDoubled}
         />
       </div>
       

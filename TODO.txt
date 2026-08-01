@@ -1,10 +1,5 @@
 npm run dev - para correr jogo
 
-TODO
-
-adicionar a cheat sheet para aprender a jogar
-
-
 NOTAS IMPORTANTES:
 
 visualmente alterar o doouble (carta dada ficar na horizontal)

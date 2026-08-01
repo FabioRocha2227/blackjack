@@ -3,9 +3,9 @@ import { memo } from "react";
 
 const CARD_IMAGE_SIZE = 64;
 
-function Card({ card, hidden = false, flip = false }) {
+function Card({ card, hidden = false, flip = false, rotated = false }) {
   return (
-    <div className={`card ${hidden ? "back" : ""} ${flip ? "flip" : ""}`}>
+    <div className={`card ${hidden ? "back" : ""} ${flip ? "flip" : ""} ${rotated ? "rotated" : ""}`}>
       {hidden ? (
         <img
           src={CARD_BACK_SRC}

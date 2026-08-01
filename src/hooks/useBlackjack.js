@@ -22,6 +22,8 @@ export function useBlackjack(initialChips = 500) {
   const [chips, setChips] = useState(initialChips);
   const [bet, setBet] = useState(0);
   const [handBets, setHandBets] = useState([]); // bets for each hand after a split
+  const [doubled, setDoubled] = useState(false); // was the main (non-split) hand doubled down?
+  const [handDoubled, setHandDoubled] = useState([]); // was each split hand doubled down?
 
   //Betting
   function placeBet(amount) {
@@ -40,13 +42,18 @@ export function useBlackjack(initialChips = 500) {
 
     // Uncomment the next line to force a split test hand.
     //const playerHand = [{ rank: "4", suit: "Spades" }, { rank: "4", suit: "Diamonds" }];
-    const playerHand = [newDeck.pop(), newDeck.pop()];
+    const playerHand = [{ rank: "8", suit: "Spades" }, { rank: "3", suit: "Diamonds" }];
+
+    //const playerHand = [newDeck.pop(), newDeck.pop()];
     const dealerHand = [newDeck.pop(), newDeck.pop()];
 
     setDeck(newDeck);
     setPlayer(playerHand);
     setDealer(dealerHand);
     setPlayerHands([]);
+    setHandBets([]);
+    setDoubled(false);
+    setHandDoubled([]);
     setActiveHandIndex(0);
     setSplitActive(false);
     setMessage("");
@@ -165,6 +172,7 @@ export function useBlackjack(initialChips = 500) {
     setDeck([...newDeck]);
     setPlayer([...newPlayerHand]);
     setDealerRevealed(true);
+    setDoubled(true);
 
     await new Promise(resolve => setTimeout(resolve, 800));
 
@@ -200,6 +208,7 @@ export function useBlackjack(initialChips = 500) {
     setDeck(newDeck);
     setPlayerHands([firstHand, secondHand]);
     setHandBets([bet, bet]);
+    setHandDoubled([false, false]);
     setActiveHandIndex(0);
     setPlayer([]);
     setMessage("Playing Hand 1...");
@@ -258,6 +267,10 @@ export function useBlackjack(initialChips = 500) {
     const newHandBets = [...handBets];
     newHandBets[index] = handBets[index] * 2;
     setHandBets(newHandBets);
+
+    const newHandDoubled = [...handDoubled];
+    newHandDoubled[index] = true;
+    setHandDoubled(newHandDoubled);
 
     const newDeck = [...deck];
     const newCard = newDeck.pop();
@@ -339,6 +352,8 @@ export function useBlackjack(initialChips = 500) {
     setDealer([]);
     setPlayerHands([]);
     setHandBets([]);
+    setDoubled(false);
+    setHandDoubled([]);
     setActiveHandIndex(0);
     setSplitActive(false);
     setDealerRevealed(false);
@@ -354,6 +369,8 @@ export function useBlackjack(initialChips = 500) {
     setDealer([]);
     setPlayerHands([]);
     setHandBets([]);
+    setDoubled(false);
+    setHandDoubled([]);
     setActiveHandIndex(0);
     setSplitActive(false);
     setDealerRevealed(false);
@@ -377,6 +394,8 @@ export function useBlackjack(initialChips = 500) {
     chips,
     bet,
     handBets,
+    doubled,
+    handDoubled,
     // actions
     placeBet,
     playerHit,

@@ -267,6 +267,7 @@
 }
 
 .hand {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -318,6 +319,27 @@
 
   100% {
     transform: rotateY(0deg);
+  }
+}
+
+.card.rotated {
+  position: absolute;
+  top: 10%;
+  left: 52%;
+  z-index: 5;
+  animation: dropRotate 0.35s ease-out both;
+  pointer-events: none;
+}
+
+@keyframes dropRotate {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-14px) scale(0.92) rotate(90deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(90deg);
   }
 }
 
