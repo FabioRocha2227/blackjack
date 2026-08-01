@@ -24,6 +24,8 @@ export function useBlackjack(initialChips = 500) {
   const [handBets, setHandBets] = useState([]); // bets for each hand after a split
   const [doubled, setDoubled] = useState(false); // was the main (non-split) hand doubled down?
   const [handDoubled, setHandDoubled] = useState([]); // was each split hand doubled down?
+  const [offeringInsurance, setOfferingInsurance] = useState(false);
+  const [insuranceBet, setInsuranceBet] = useState(0);
 
   //Betting
   function placeBet(amount) {
@@ -46,11 +48,20 @@ export function useBlackjack(initialChips = 500) {
     //const playerHand = [{ rank: "8", suit: "Spades" }, { rank: "3", suit: "Diamonds" }];
 
     const playerHand = [newDeck.pop(), newDeck.pop()];
+      const playerHand = [{ rank: "8", suit: "Spades" }, { rank: "3", suit: "Diamonds" }];
     const dealerHand = [newDeck.pop(), newDeck.pop()];
 
     setDeck(newDeck);
     setPlayer(playerHand);
     setDealer(dealerHand);
+    // Offer insurance if dealer's upcard is an Ace
+    if (dealerHand[0] && dealerHand[0].rank === "Ace") {
+      setOfferingInsurance(true);
+      setInsuranceBet(0);
+    } else {
+      setOfferingInsurance(false);
+      setInsuranceBet(0);
+    }
     setPlayerHands([]);
     setHandBets([]);
     setDoubled(false);
@@ -69,6 +80,10 @@ export function useBlackjack(initialChips = 500) {
       setDealerRevealed(true);
 
       if (dealerTotal === 21) {
+        // Dealer has blackjack. If player placed insurance, pay it out 2:1
+        if (insuranceBet > 0) {
+          setChips((c) => c + insuranceBet * 3);
+        }
         setChips((c) => c + wager); // push, bet returned
         setMessage("Push! Both player and dealer have Blackjack!");
       } else {
@@ -126,6 +141,11 @@ export function useBlackjack(initialChips = 500) {
       const newCard = newDeck.pop();
       dealerHand.push(newCard);
       setDealer([...dealerHand]);
+          // If player had placed insurance and dealer does NOT have blackjack, insurance is lost
+          if (insuranceBet > 0 && handValue(dealerHand) !== 21) {
+            // insurance bet already deducted when placed; nothing to return
+          }
+          setDealer([...dealerHand]);
       setDeck([...newDeck]);
       await new Promise(resolve => setTimeout(resolve, 800));
     }
@@ -155,6 +175,10 @@ export function useBlackjack(initialChips = 500) {
     setDealer([...dealerHand]);
     setDeck([...newDeck]);
     setMessage(resultMessage);
+
+  // Clear insurance state after resolution
+  setInsuranceBet(0);
+  setOfferingInsurance(false);
 
     await new Promise(resolve => setTimeout(resolve, 1000));
     setShowPopup(true);
@@ -193,6 +217,33 @@ export function useBlackjack(initialChips = 500) {
     }
 
     await playerStand(doubleWager, newPlayerHand);
+  }
+
+  function placeInsurance(amount) {
+    if (!offeringInsurance) return;
+    const ins = Math.floor(Number(amount));
+    if (!Number.isFinite(ins) || ins <= 0 || ins > Math.floor(bet / 2) || ins > chips) return;
+    setChips((c) => c - ins);
+    setInsuranceBet(ins);
+    setOfferingInsurance(false);
+  }
+
+  function cancelInsurance() {
+    setOfferingInsurance(false);
+    setInsuranceBet(0);
+  }
+
+  async function playerSurrender() {
+    if (!gameStarted || splitActive) return;
+    // give back half the original wager
+    const half = Math.floor(bet / 2);
+    setChips((c) => c + half);
+    setMessage(`Player surrendered. Returned ${half} chips.`);
+    await new Promise((res) => setTimeout(res, 800));
+    setShowPopup(true);
+    setGameStarted(false);
+    setOfferingInsurance(false);
+    setInsuranceBet(0);
   }
 
   async function playerSplit() {
@@ -405,6 +456,8 @@ export function useBlackjack(initialChips = 500) {
     handBets,
     doubled,
     handDoubled,
+    offeringInsurance,
+    insuranceBet,
     // actions
     placeBet,
     playerHit,
@@ -414,6 +467,9 @@ export function useBlackjack(initialChips = 500) {
     playerHitSplit,
     playerStandSplit,
     playerDoubleSplit,
+    placeInsurance,
+    cancelInsurance,
+    playerSurrender,
     playAgain,
     repeatBet,
   };
