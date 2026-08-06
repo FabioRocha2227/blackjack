@@ -25,8 +25,6 @@ function PlayerArea({
 }) {
   return (
     <div className="player-area">
-      <h2>Your Hand{splitActive ? "s" : ""}</h2>
-
       {!splitActive ? (
         <>
           <Hand

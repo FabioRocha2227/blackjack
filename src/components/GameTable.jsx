@@ -92,26 +92,28 @@ export default function GameTable({ profile, onExit }) {
         <BettingPanel chips={game.chips} lastBet={game.bet} onDeal={game.placeBet} />
       ) : null}
 
-      {game.gameStarted && !game.showPopup && game.awaitingPlayerInput && (
-        <Controls
-          splitActive={game.splitActive}
-          player={game.player}
-          playerHands={game.playerHands}
-          activeHandIndex={game.activeHandIndex}
-          chips={game.chips}
-          bet={game.bet}
-          handBets={game.handBets}
-          dealerUpCard={game.dealer?.[0]}
-          onHit={game.playerHit}
-          onStand={game.playerStand}
-          onDouble={game.playerDouble}
-          onSplit={game.playerSplit}
-          onSurrender={game.playerSurrender}
-          onHitSplit={game.playerHitSplit}
-          onStandSplit={game.playerStandSplit}
-          onDoubleSplit={game.playerDoubleSplit}
-        />
-      )}
+      <div className="controls-shell">
+        {game.gameStarted && !game.showPopup && game.awaitingPlayerInput && (
+          <Controls
+            splitActive={game.splitActive}
+            player={game.player}
+            playerHands={game.playerHands}
+            activeHandIndex={game.activeHandIndex}
+            chips={game.chips}
+            bet={game.bet}
+            handBets={game.handBets}
+            dealerUpCard={game.dealer?.[0]}
+            onHit={game.playerHit}
+            onStand={game.playerStand}
+            onDouble={game.playerDouble}
+            onSplit={game.playerSplit}
+            onSurrender={game.playerSurrender}
+            onHitSplit={game.playerHitSplit}
+            onStandSplit={game.playerStandSplit}
+            onDoubleSplit={game.playerDoubleSplit}
+          />
+        )}
+      </div>
 
       <ResultPopup show={game.showPopup} message={game.message} onPlayAgain={game.playAgain} onRepeatBet={game.repeatBet} />
     </div>

@@ -73,7 +73,9 @@ export default function BettingPanel({ chips, lastBet, onDeal }) {
           step={5}
         />
       </label>
-      <ChipStack amount={betValue} size="sm" />
+      <div className="bet-preview" aria-live="polite">
+        <ChipStack amount={betValue} size="sm" />
+      </div>
 
       <button type="submit" disabled={!isValid}>
         Deal

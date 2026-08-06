@@ -131,12 +131,16 @@
 }
 
 .table-hands {
+  position: relative;
   width: min(100%, 1180px);
   flex: 1 1 auto;
   min-height: 0;
-  display: grid;
-  grid-template-rows: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   gap: 12px;
+  padding: 6px 0;
 }
 
 .table-copy {
@@ -243,27 +247,9 @@
   z-index: 1;
   width: 100%;
   min-height: 0;
-  padding: clamp(14px, 1.6vw, 22px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03)),
-    rgba(6, 27, 17, 0.76);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 12px 30px rgba(0, 0, 0, 0.24);
-  contain: layout paint;
-  overflow: hidden;
-}
-
-.dealer-area h2,
-.player-area h2 {
-  margin: 0 0 14px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.08rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #ffe7aa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hand {
@@ -274,7 +260,6 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 4px;
-  margin-bottom: 4px;
 }
 
 .card {
@@ -323,6 +308,11 @@
   }
 }
 
+/* Double-down card: pulled out of the normal flex flow and centered on top of
+   the hand, rotated sideways - the classic "sideways card" tell that a hand
+   was doubled. Needs its own full `animation` (not just a transform tweak),
+   since .card's `drop` animation holds its end state via `both`/`forwards`
+   and would otherwise fight a plain static rotate. */
 .card.rotated {
   position: absolute;
   top: 50%;
@@ -347,12 +337,13 @@
 .hand-value {
   margin: 10px auto 0;
   width: fit-content;
-  padding: 6px 12px;
+  padding: 5px 13px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 245, 214, 0.92);
-  font-size: 0.95rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #fff4d0;
+  font-size: 0.9rem;
+  font-weight: 700;
   letter-spacing: 0.03em;
 }
 
@@ -365,6 +356,16 @@
   justify-content: center;
   gap: 10px;
   padding-top: 2px;
+}
+
+.controls-shell {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1040px);
+  min-height: 76px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .controls button,
@@ -416,19 +417,14 @@
 .split-hand {
   position: relative;
   margin: 10px;
-  padding: 12px 12px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
+  padding: 4px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.03)),
-    #0a5130;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  border-radius: 16px;
+  transition: transform 0.3s ease;
   min-width: 200px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .split-hand .hand-value {
@@ -439,11 +435,22 @@
    casino table look: a chip stack with a small amount badge underneath. --- */
 
 .hand-bet {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  margin-top: 12px;
+  margin-top: 14px;
+  padding: 10px 26px 4px;
+}
+
+.hand-bet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  z-index: -1;
 }
 
 .hand-bet__amount {
@@ -458,7 +465,7 @@
 }
 
 .active-hand {
-  border-color: rgba(255, 227, 130, 0.9);
+  border: 1px solid rgba(255, 227, 130, 0.9);
   box-shadow:
     0 0 0 1px rgba(255, 227, 130, 0.2),
     0 0 26px rgba(255, 214, 102, 0.22),
@@ -765,7 +772,7 @@
 
 .chip-preset__label {
   position: absolute;
-  bottom: -18px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.72rem;
@@ -875,6 +882,13 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
+.bet-preview {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -918,6 +932,10 @@
 
   .controls {
     gap: 10px;
+  }
+
+  .controls-shell {
+    min-height: 132px;
   }
 
   .controls button {
