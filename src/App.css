@@ -121,15 +121,13 @@
 }
 
 .table-header--game {
-  width: 100%;
-  text-align: center;
-
+  width: min(100%, 1180px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  margin-top: 10px;
+  gap: 12px;
+  text-align: center;
 }
 
 .table-hands {
@@ -326,8 +324,8 @@
 
 .card.rotated {
   position: absolute;
-  top: 10%;
-  left: 52%;
+  top: 50%;
+  left: 50%;
   z-index: 5;
   animation: dropRotate 0.35s ease-out both;
   pointer-events: none;
@@ -434,6 +432,28 @@
 
 .split-hand .hand-value {
   margin-top: 6px;
+}
+
+/* --- Bet chips shown below a hand (main or split), matching the classic
+   casino table look: a chip stack with a small amount badge underneath. --- */
+
+.hand-bet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.hand-bet__amount {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 240, 203, 0.92);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .active-hand {
@@ -668,7 +688,6 @@
   transform: none;
   filter: saturate(0.7);
 }
-
 
 /* --- Betting panel */
 

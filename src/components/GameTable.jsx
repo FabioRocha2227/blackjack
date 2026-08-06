@@ -74,6 +74,7 @@ export default function GameTable({ profile, onExit }) {
           activeHandIndex={game.activeHandIndex}
           chips={game.chips}
           lastBet={game.bet}
+          handBets={game.handBets}
           doubled={game.doubled}       
           handDoubled={game.handDoubled}
         />
@@ -105,6 +106,7 @@ export default function GameTable({ profile, onExit }) {
           onStand={game.playerStand}
           onDouble={game.playerDouble}
           onSplit={game.playerSplit}
+          onSurrender={game.playerSurrender}
           onHitSplit={game.playerHitSplit}
           onStandSplit={game.playerStandSplit}
           onDoubleSplit={game.playerDoubleSplit}
