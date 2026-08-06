@@ -4,15 +4,14 @@ import PlayerArea from "./PlayerArea.jsx";
 import Controls from "./Controls.jsx";
 import ResultPopup from "./ResultPopup.jsx";
 import BettingPanel from "./BettingPanel.jsx";
-import StrategySidebar from "./StrategySidebar.jsx";
+import ChipStack from "./ChipsStack.jsx";
 import { saveLeaderboardEntry } from "../utils/leaderboard.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 
 
 export default function GameTable({ profile, onExit }) {
   const game = useBlackjack(profile?.chips ?? 0);
-  const [showStrategy, setShowStrategy] = useState(false);
 
   const savedRef = useRef(false);
   const isGameOver = game.chips <= 0 && !game.gameStarted && !game.showPopup;
@@ -50,31 +49,19 @@ export default function GameTable({ profile, onExit }) {
   }
   return (
     <div className="table-container">
+      <header className="table-header table-header--game">
+          <h1 className="game-title">♠ Blackjack</h1>
+          <p className="table-rule">Dealer hits on 16</p>
 
-      <div className="header-controls">
-        <button className="menu-button" onClick={handleExit}>
+          {profile && (
+            <p className="game-subtitle game-subtitle--chips">
+              {profile.name} · {game.chips} chips
+              <ChipStack amount={game.chips} size="xs" />
+            </p>
+          )}
+        <button className="menu-link" onClick={handleExit}>
           Menu
         </button>
-
-        {game.gameStarted && (
-          <button
-            className="strategy-header-toggle"
-            onClick={() => setShowStrategy((s) => !s)}
-          >
-            {showStrategy ? "Hide Strategy ▲" : "Show Strategy ▼"}
-          </button>
-        )}
-      </div>
-
-      <header className="table-header table-header--game">
-        <h1 className="game-title">♠ Blackjack</h1>
-        <p className="table-rule">Dealer hits on 16</p>
-
-        {profile && (
-          <p className="game-subtitle">
-            {profile.name} · {game.chips} chips
-          </p>
-        )}
       </header>
 
       <div className="table-hands">
@@ -121,20 +108,8 @@ export default function GameTable({ profile, onExit }) {
           onHitSplit={game.playerHitSplit}
           onStandSplit={game.playerStandSplit}
           onDoubleSplit={game.playerDoubleSplit}
-          onSurrender={game.playerSurrender}
-          showStrategy={showStrategy}
         />
       )}
-
-      <StrategySidebar
-        show={showStrategy}
-        player={game.player}
-        playerHands={game.playerHands}
-        splitActive={game.splitActive}
-        activeHandIndex={game.activeHandIndex}
-        dealerUpCard={game.dealer?.[0]}
-        onClose={() => setShowStrategy(false)}
-      />
 
       <ResultPopup show={game.showPopup} message={game.message} onPlayAgain={game.playAgain} onRepeatBet={game.repeatBet} />
     </div>

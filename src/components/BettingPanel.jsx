@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { chipImageSrc } from "../utils/chipsImages.js";
+import ChipStack from "./ChipsStack.jsx";
 
 const CHIP_PRESETS = [10, 25, 50, 100];
 const MIN_BET = 10;
@@ -39,17 +41,20 @@ export default function BettingPanel({ chips, lastBet, onDeal }) {
   return (
     <form className="betting-panel" onSubmit={handleDeal}>
       <p className="chips-readout">Chips: {chips}</p>
+      <ChipStack amount={chips} size="sm" />
 
       <div className="chip-presets">
         {CHIP_PRESETS.map(amount => (
           <button
             type="button"
             key={amount}
-            className="secondary"
+            className="chip-preset"
             onClick={() => addPresetBet(amount)}
             disabled={amount > chips}
+            aria-label={`Add ${amount} chip`}
           >
-            {amount}
+            <img src={chipImageSrc(amount)} alt="" />
+            <span className="chip-preset__label">{amount}</span>
           </button>
         ))}
         <button type="button" className="secondary" onClick={() => setBetInput("0")}>
@@ -68,6 +73,7 @@ export default function BettingPanel({ chips, lastBet, onDeal }) {
           step={5}
         />
       </label>
+      <ChipStack amount={betValue} size="sm" />
 
       <button type="submit" disabled={!isValid}>
         Deal

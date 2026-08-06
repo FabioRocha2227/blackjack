@@ -1,4 +1,5 @@
 import Hand from "./Hand.jsx";
+import ChipStack from "./ChipsStack.jsx";
 import { handValue } from "../utils/deck.js";
 import { memo } from "react";
 
@@ -10,6 +11,7 @@ function PlayerArea({ player, playerHands, splitActive, activeHandIndex, lastBet
       {lastBet > 0 && (
         <div className="bet-value">
           <p>Current Bet: ${lastBet}</p>
+          <ChipStack amount={lastBet} size="sm" />
         </div>
       )}
 

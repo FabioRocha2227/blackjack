@@ -669,6 +669,7 @@
   filter: saturate(0.7);
 }
 
+
 /* --- Betting panel */
 
 .betting-panel {
@@ -715,6 +716,123 @@
 
 .betting-panel .chip-presets button.secondary:hover {
   border-color: rgba(255, 233, 172, 0.28);
+}
+
+/* --- Chip preset buttons (BettingPanel) --- */
+
+.chip-presets button.chip-preset {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.chip-presets button.chip-preset img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+}
+
+.chip-preset__label {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(255, 240, 203, 0.75);
+  white-space: nowrap;
+}
+
+.chip-presets button.chip-preset:hover:not(:disabled) {
+  transform: translateY(-3px);
+  filter: brightness(1.08);
+}
+
+.chip-presets button.chip-preset:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
+}
+
+/* Extra bottom margin so the denomination label under each chip has room */
+.chip-presets {
+  margin-bottom: 10px;
+}
+
+/* --- Chip stack visuals (readout, current bet, header) --- */
+
+.chip-stack {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 4px;
+  vertical-align: middle;
+}
+
+.chip-stack__item {
+  position: relative;
+  display: inline-flex;
+}
+
+.chip-stack--xs .chip-stack__item img {
+  width: 20px;
+  height: 20px;
+}
+
+.chip-stack--sm .chip-stack__item img {
+  width: 32px;
+  height: 32px;
+}
+
+.chip-stack--md .chip-stack__item img {
+  width: 44px;
+  height: 44px;
+}
+
+.chip-stack__item img {
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.chip-stack__count {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  min-width: 15px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: #1d2816;
+  border: 1px solid rgba(255, 227, 130, 0.6);
+  color: #ffe7aa;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.chip-stack__remainder {
+  font-size: 0.78rem;
+  color: rgba(255, 240, 203, 0.65);
+  align-self: center;
+}
+
+/* --- Header chip readout line --- */
+
+.game-subtitle--chips {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .betting-panel .form-field {
