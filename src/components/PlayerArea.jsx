@@ -10,6 +10,7 @@ function HandBet({ amount }) {
       <ChipStack amount={amount} size="sm" />
       <span className="hand-bet__amount">${amount}</span>
     </div>
+  );
 }
 
 function PlayerArea({

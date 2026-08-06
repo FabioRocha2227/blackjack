@@ -274,6 +274,7 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 4px;
+  margin-bottom: 4px;
 }
 
 .card {
