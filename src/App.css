@@ -139,8 +139,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 6px 0;
+  gap: 8px;
+  padding: 50px 0 6px;
 }
 
 .table-copy {
@@ -239,6 +239,7 @@
   color: rgba(255, 248, 224, 0.72);
   font-size: 0.92rem;
   letter-spacing: 0.03em;
+  padding: 15px 15px;
 }
 
 .dealer-area,
@@ -250,6 +251,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.player-area--split {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 18px;
 }
 
 .hand {
@@ -308,15 +317,10 @@
   }
 }
 
-/* Double-down card: pulled out of the normal flex flow and centered on top of
-   the hand, rotated sideways - the classic "sideways card" tell that a hand
-   was doubled. Needs its own full `animation` (not just a transform tweak),
-   since .card's `drop` animation holds its end state via `both`/`forwards`
-   and would otherwise fight a plain static rotate. */
 .card.rotated {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 10%;
+  left: 52%;
   z-index: 5;
   animation: dropRotate 0.35s ease-out both;
   pointer-events: none;
@@ -416,7 +420,7 @@
 
 .split-hand {
   position: relative;
-  margin: 10px;
+  margin: 0;
   padding: 4px;
   display: inline-flex;
   flex-direction: column;
@@ -424,7 +428,9 @@
   gap: 8px;
   border-radius: 16px;
   transition: transform 0.3s ease;
-  min-width: 200px;
+  min-width: min(100%, 260px);
+  flex: 1 1 320px;
+  max-width: 420px;
 }
 
 .split-hand .hand-value {
@@ -723,6 +729,8 @@
   letter-spacing: 0.03em;
 }
 
+
+
 .chip-presets {
   display: flex;
   flex-wrap: wrap;
@@ -772,7 +780,7 @@
 
 .chip-preset__label {
   position: absolute;
-  bottom: 2px;
+  bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.72rem;
@@ -927,6 +935,7 @@
   .dealer-area,
   .player-area {
     padding: 16px;
+    padding-top: 150px;
     border-radius: 18px;
   }
 
@@ -976,7 +985,6 @@
   max-width: 480px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.11);
-  overflow: hidden;
   background: rgba(6, 27, 17, 0.55);
 }
 

@@ -15,7 +15,7 @@ function Hand({ cards, hiddenIndexes = [], flipIndexes = [], rotatedIndexes = []
           />
         ))}
       </div>
-      {valueLabel && <p className="hand-value">{valueLabel}</p>}
+      {cards.length > 0 && valueLabel && <p className="hand-value">{valueLabel}</p>}
     </>
   );
 }

@@ -24,7 +24,7 @@ function PlayerArea({
   handDoubled,
 }) {
   return (
-    <div className="player-area">
+    <div className={`player-area ${splitActive ? "player-area--split" : ""}`}>
       {!splitActive ? (
         <>
           <Hand

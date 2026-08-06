@@ -20,6 +20,8 @@ export default function LeaderboardScreen({ onBack }) {
   }, []);
 
   const ranked = [...entries].sort((a, b) => b.netProfitLoss - a.netProfitLoss);
+  //display only the top 10 entries
+  const topRanked = ranked.slice(0, 10);
 
   function handleClear() {
     clearLeaderboard();
@@ -29,15 +31,15 @@ export default function LeaderboardScreen({ onBack }) {
   return (
     <div className="menu-screen">
       <header className="table-header">
-        <h1 className="game-title">Leaderboard</h1>
+        <h1 className="game-title">Top 10 Leaderboard</h1>
         <p className="game-subtitle">
-          {ranked.length === 0
+          {topRanked.length === 0
             ? "No games recorded yet — finish a game or exit to the menu to see it here."
-            : `${ranked.length} game${ranked.length === 1 ? "" : "s"} recorded`}
+            : `${topRanked.length} game${topRanked.length === 1 ? "" : "s"} recorded`}
         </p>
       </header>
 
-      {ranked.length > 0 && (
+      {topRanked.length > 0 && (
         <div className="leaderboard-table-wrap">
           <table className="leaderboard-table">
             <thead>
@@ -50,7 +52,7 @@ export default function LeaderboardScreen({ onBack }) {
               </tr>
             </thead>
             <tbody>
-              {ranked.map((entry, i) => (
+              {topRanked.map((entry, i) => (
                 <tr key={i}>
                   <td>{i + 1}</td>
                   <td>{entry.name}</td>

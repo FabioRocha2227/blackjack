@@ -41,11 +41,11 @@ export function useBlackjack(initialChips = 500) {
     let newDeck = deck.length < RESHUFFLE_THRESHOLD ? shuffleDeck(buildDeck()) : [...deck];
 
     // Uncomment the next line to force a split test hand.
-    //const playerHand = [{ rank: "4", suit: "Spades" }, { rank: "4", suit: "Diamonds" }];
+    const playerHand = [{ rank: "4", suit: "Spades" }, { rank: "4", suit: "Diamonds" }];
     // Uncomment the next line to force a double test hand.
     //const playerHand = [{ rank: "8", suit: "Spades" }, { rank: "3", suit: "Diamonds" }];
 
-    const playerHand = [newDeck.pop(), newDeck.pop()];
+    //const playerHand = [newDeck.pop(), newDeck.pop()];
     const dealerHand = [newDeck.pop(), newDeck.pop()];
 
     setDeck(newDeck);
@@ -372,6 +372,7 @@ export function useBlackjack(initialChips = 500) {
     setShowPopup(false);
     setGameStarted(false);
     setAwaitingPlayerInput(false);
+    setBet(0);
     setPlayer([]);
     setDealer([]);
     setPlayerHands([]);
