@@ -1,7 +1,7 @@
 .menu-screen {
   position: relative;
   width: min(1240px, calc(100vw - 24px));
-  height: calc(100vh - 24px);
+  height: calc(var(--app-height) - 24px);
   max-height: 876px;
   margin: 12px auto;
   padding: clamp(22px, 3vw, 36px);
@@ -166,7 +166,7 @@
 .table-container {
   position: relative;
   width: min(1240px, calc(100vw - 24px));
-  height: calc(100vh - 24px);
+  height: calc(var(--app-height) - 24px);
   max-height: 876px;
   margin: 12px auto;
   padding: clamp(16px, 2vw, 26px);
@@ -912,11 +912,11 @@
 @media (max-width: 720px) {
   .menu-screen {
     width: min(100vw - 14px, 920px);
-    height: calc(100vh - 14px);
+    height: calc(var(--app-height) - 14px);
     max-height: none;
     margin: 7px auto;
     border-radius: 22px;
-    padding: 24px 18px;
+    padding: 20px 16px;
   }
 
   .menu-buttons {
@@ -926,17 +926,23 @@
 
   .table-container {
     width: min(100vw - 14px, 1180px);
-    height: calc(100vh - 14px);
+    height: calc(var(--app-height) - 14px);
     max-height: none;
     margin: 7px auto;
     border-radius: 22px;
+    padding: 14px 12px 12px;
   }
 
   .dealer-area,
   .player-area {
-    padding: 16px;
-    padding-top: 150px;
+    padding: 12px 12px 8px;
+    padding-top: clamp(88px, 14vh, 132px);
     border-radius: 18px;
+  }
+
+  .table-hands {
+    padding: 22px 0 4px;
+    gap: 4px;
   }
 
   .controls {
@@ -944,7 +950,7 @@
   }
 
   .controls-shell {
-    min-height: 132px;
+    min-height: 116px;
   }
 
   .controls button {
@@ -952,8 +958,41 @@
     min-width: 138px;
   }
 
+  .header-controls {
+    top: 14px;
+    right: 14px;
+    left: 14px;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .header-controls .menu-button,
+  .header-controls .strategy-header-toggle {
+    padding: 9px 12px;
+    font-size: 0.78rem;
+  }
+
   .card img {
     width: clamp(72px, 19vw, 92px);
+  }
+
+  .game-title {
+    font-size: clamp(1.8rem, 9vw, 3rem);
+  }
+
+  .game-subtitle {
+    font-size: 0.84rem;
+    padding: 10px 12px;
+  }
+
+  .table-rule {
+    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+  }
+
+  .chips-readout {
+    font-size: 1.05rem;
   }
 
   .popup {

@@ -44,3 +44,13 @@
 	```bash
 	npm start
 	```
+
+## Deploy to GitHub Pages
+
+1. Build and publish the web app:
+
+	```bash
+	npm run deploy
+	```
+
+2. In GitHub, set the Pages source to the `gh-pages` branch if it is not already configured.

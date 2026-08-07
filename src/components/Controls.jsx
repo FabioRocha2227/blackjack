@@ -10,7 +10,6 @@ function Controls({
   chips,
   bet,
   handBets,
-  dealerUpCard,
   onHit,
   onStand,
   onDouble,
@@ -19,16 +18,9 @@ function Controls({
   onStandSplit,
   onDoubleSplit,
   onSurrender,
-  showStrategy,
 }) {
-  const currentHand = splitActive
-  ? playerHands[activeHandIndex]
-  : player;
-
-   return (
+  return (
     <div className="controls-wrapper">
-      
-
       <div className="controls">
         {!splitActive ? (
           <>
@@ -50,8 +42,8 @@ function Controls({
             )}
 
             {canSplitHand(player) && chips >= bet && (
-                <button onClick={onSplit}>Split</button>
-              )}
+              <button onClick={onSplit}>Split</button>
+            )}
           </>
         ) : (
           <>
@@ -73,7 +65,6 @@ function Controls({
               )}
           </>
         )}
-        
       </div>
     </div>
   );

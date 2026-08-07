@@ -19,34 +19,41 @@ export default function GameTable({ profile, onExit }) {
   const savedRef = useRef(false);
   const isGameOver = game.chips <= 0 && !game.gameStarted && !game.showPopup;
 
-  function buildEntry(reason) {
-    const startingChips = profile?.chips ?? 0;
-    const durationMs = profile?.startedAt ? Date.now() - profile.startedAt : 0;
-
-    return {
-      name: profile?.name ?? "Player",
-      startingChips,
-      finalChips: game.chips,
-      netProfitLoss: game.chips - startingChips,
-      durationMs,
-      endedAt: new Date().toISOString(),
-      reason, // "out_of_chips" | "exited"
-    };
-  }
-
   //auto save when player runs oout of chips
 
   useEffect(() => {
     if (isGameOver && !savedRef.current) {
       savedRef.current = true;
-      saveLeaderboardEntry(buildEntry("out_of_chips"));
+      const startingChips = profile?.chips ?? 0;
+      const durationMs = profile?.startedAt ? Date.now() - profile.startedAt : 0;
+
+      saveLeaderboardEntry({
+        name: profile?.name ?? "Player",
+        startingChips,
+        finalChips: game.chips,
+        netProfitLoss: game.chips - startingChips,
+        durationMs,
+        endedAt: new Date().toISOString(),
+        reason: "out_of_chips",
+      });
     }
-  }, [isGameOver]);
+  }, [isGameOver, game.chips, profile?.chips, profile?.name, profile?.startedAt]);
 
   function handleExit() {
     if (!savedRef.current) {
       savedRef.current = true;
-      saveLeaderboardEntry(buildEntry("exited"));
+      const startingChips = profile?.chips ?? 0;
+      const durationMs = profile?.startedAt ? Date.now() - profile.startedAt : 0;
+
+      saveLeaderboardEntry({
+        name: profile?.name ?? "Player",
+        startingChips,
+        finalChips: game.chips,
+        netProfitLoss: game.chips - startingChips,
+        durationMs,
+        endedAt: new Date().toISOString(),
+        reason: "exited",
+      });
     }
     onExit();
   }
@@ -121,7 +128,6 @@ export default function GameTable({ profile, onExit }) {
             onDouble={game.playerDouble}
             onSplit={game.playerSplit}
             onSurrender={game.playerSurrender}
-            showStrategy={showStrategy}
             onHitSplit={game.playerHitSplit}
             onStandSplit={game.playerStandSplit}
             onDoubleSplit={game.playerDoubleSplit}

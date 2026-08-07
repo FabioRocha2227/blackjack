@@ -1,7 +1,6 @@
 // Plain-node test runner — no framework needed.
 // Run with: node src/utils/payouts.test.js
 import { blackjackReturn, winReturn, pushReturn, splitResults, surrenderReturn } from "./payouts.js";
-import { handValue } from "./deck.js";
 
 const card = (rank, suit = "Spades") => ({ rank, suit });
 
