@@ -933,16 +933,50 @@
     padding: 14px 12px 12px;
   }
 
-  .dealer-area,
-  .player-area {
-    padding: 12px 12px 8px;
-    padding-top: clamp(88px, 14vh, 132px);
-    border-radius: 18px;
+  .table-header--game {
+    gap: 6px;
+  }
+
+  .table-header .game-subtitle {
+    padding: 8px 10px;
+  }
+
+  .table-rule {
+    margin-top: 4px;
   }
 
   .table-hands {
-    padding: 22px 0 4px;
-    gap: 4px;
+    justify-content: flex-start;
+    padding: 10px 0 4px;
+    gap: 10px;
+  }
+
+  .dealer-area,
+  .player-area {
+    padding: 8px 12px 6px;
+    padding-top: clamp(58px, 8vh, 92px);
+    border-radius: 18px;
+  }
+
+  .player-area--split {
+    gap: 12px;
+  }
+
+  .split-hand {
+    padding: 14px 12px 10px;
+    gap: 6px;
+    flex: 1 1 100%;
+  }
+
+  .hand-bet {
+    margin-top: 8px;
+    padding: 8px 18px 2px;
+  }
+
+  .hand-value {
+    margin-top: 8px;
+    padding: 4px 10px;
+    font-size: 0.82rem;
   }
 
   .controls {
@@ -950,12 +984,13 @@
   }
 
   .controls-shell {
-    min-height: 116px;
+    min-height: 104px;
   }
 
   .controls button {
-    flex: 1 1 calc(50% - 10px);
-    min-width: 138px;
+    flex: 1 1 calc(50% - 8px);
+    min-width: 126px;
+    padding: 0.8rem 1rem;
   }
 
   .header-controls {
@@ -974,7 +1009,7 @@
   }
 
   .card img {
-    width: clamp(72px, 19vw, 92px);
+    width: clamp(66px, 17vw, 86px);
   }
 
   .game-title {
@@ -982,8 +1017,8 @@
   }
 
   .game-subtitle {
-    font-size: 0.84rem;
-    padding: 10px 12px;
+    font-size: 0.82rem;
+    padding: 8px 10px;
   }
 
   .table-rule {
@@ -992,7 +1027,7 @@
   }
 
   .chips-readout {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   .popup {
