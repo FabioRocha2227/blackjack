@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { buildDeck, shuffleDeck, handValue } from "../utils/deck.js";
 import { canDouble } from "../utils/doubleRules.js";
+import { canSplitHand } from "../utils/splitRules.js";
 
 // Below this many cards left in the shoe, we cut and bring in a fresh deck
 // instead of reshuffling a full 52-card deck every single hand.
@@ -41,7 +42,7 @@ export function useBlackjack(initialChips = 500) {
     let newDeck = deck.length < RESHUFFLE_THRESHOLD ? shuffleDeck(buildDeck()) : [...deck];
 
     // Uncomment the next line to force a split test hand.
-    const playerHand = [{ rank: "4", suit: "Spades" }, { rank: "4", suit: "Diamonds" }];
+    const playerHand = [{ rank: "7", suit: "Spades" }, { rank: "7", suit: "Diamonds" }];
     // Uncomment the next line to force a double test hand.
     //const playerHand = [{ rank: "8", suit: "Spades" }, { rank: "3", suit: "Diamonds" }];
 
@@ -211,7 +212,7 @@ export function useBlackjack(initialChips = 500) {
   }
 
   async function playerSplit() {
-    if (player.length !== 2 || player[0].rank !== player[1].rank) return;
+    if (!canSplitHand(player)) return;
     if (chips < bet) {
       setMessage("Not enough chips to split!");
       return;

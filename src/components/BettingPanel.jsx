@@ -41,7 +41,7 @@ export default function BettingPanel({ chips, lastBet, onDeal }) {
   return (
     <form className="betting-panel" onSubmit={handleDeal}>
       <p className="chips-readout">Chips: {chips}</p>
-      <ChipStack amount={chips} size="sm" />
+      <ChipStack  className="chip-stack" amount={chips} size="sm" />
 
       <div className="chip-presets">
         {CHIP_PRESETS.map(amount => (

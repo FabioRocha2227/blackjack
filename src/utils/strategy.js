@@ -87,12 +87,12 @@ function resolveCode(code, canDouble){
 }
 
 export function getBasicStrategyAction(hand, dealerUpCard, { canSplit = true, canDoubleNow = true } = {}) {
-    if(!hand || hand.lenght < 2 || !dealerUpCard) return null;
+    if(!hand || hand.length < 2 || !dealerUpCard) return null;
 
     const col = dealerColumnIndex(dealerUpCard);
     if(col === -1 ) return null;
 
-    if(hand.lenght === 2 && canSplit && isPair(hand)) {
+    if(hand.length === 2 && canSplit && isPair(hand)) {
         const row = PAIR_TABLE[hand[0].rank];
         if(row) {
             const code = row[col];

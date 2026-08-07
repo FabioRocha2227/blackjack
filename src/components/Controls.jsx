@@ -1,4 +1,5 @@
 import { canDouble } from "../utils/doubleRules.js";
+import { canSplitHand } from "../utils/splitRules.js";
 import { memo } from "react";
 
 function Controls({
@@ -48,9 +49,7 @@ function Controls({
               <button onClick={onDouble}>Double</button>
             )}
 
-            {player.length === 2 &&
-              player[0].rank === player[1].rank &&
-              chips >= bet && (
+            {canSplitHand(player) && chips >= bet && (
                 <button onClick={onSplit}>Split</button>
               )}
           </>

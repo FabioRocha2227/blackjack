@@ -421,7 +421,7 @@
 .split-hand {
   position: relative;
   margin: 0;
-  padding: 4px;
+  padding: 20px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;

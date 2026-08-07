@@ -1,5 +1,6 @@
 import { getBasicStrategyAction, ACTION_LABELS } from "../utils/strategy.js";
 import { canDouble } from "../utils/doubleRules.js";
+import { canSplitHand } from "../utils/splitRules.js";
 
 export default function StrategySidebar({
   show,
@@ -18,8 +19,7 @@ export default function StrategySidebar({
     currentHand?.length >= 2 && dealerUpCard
       ? getBasicStrategyAction(currentHand, dealerUpCard, {
           canSplit:
-            currentHand.length === 2 &&
-            currentHand[0].rank === currentHand[1].rank,
+            canSplitHand(currentHand),
           canDoubleNow: canDouble(currentHand),
         })
       : null;
