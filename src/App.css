@@ -1061,7 +1061,16 @@
   }
 
   .popup-actions {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .popup-actions button {
+    flex: 1;
+    padding: 0.55rem 0.6rem;
+    font-size: 0.75rem;
+    border-radius: 12px;
+    min-height: 40px;
   }
 }
 
