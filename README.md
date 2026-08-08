@@ -50,7 +50,9 @@
 1. Build and publish the web app:
 
 	```bash
+	git add .
+	git commit -m "Update website"
+	it push
+
 	npm run deploy
 	```
-
-2. In GitHub, set the Pages source to the `gh-pages` branch if it is not already configured.

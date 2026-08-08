@@ -997,13 +997,16 @@
     top: 14px;
     right: 14px;
     left: 14px;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .header-controls .menu-button,
   .header-controls .strategy-header-toggle {
+    width: 100%;
     padding: 9px 12px;
     font-size: 0.78rem;
   }
