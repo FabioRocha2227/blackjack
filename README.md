@@ -57,4 +57,4 @@
 	npm run deploy
 	```
 
-2. Website
+2. Website : https://fabiorocha2227.github.io/blackjack/

@@ -940,7 +940,7 @@
 
   .table-header--game {
     gap: 6px;
-    padding-top: 54px;
+    padding-top: 76px;
   }
 
   .table-header .game-subtitle {
@@ -1017,14 +1017,19 @@
     padding: 9px 11px;
     border-radius: 999px;
     font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
 
   .header-button-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 1.15rem;
     line-height: 1;
+    font-weight: 900;
   }
 
   .header-button-text {
@@ -1061,6 +1066,17 @@
 
   .popup-actions {
     flex-direction: column;
+  }
+
+  .strategy-sidebar {
+    left: 12px;
+    right: 12px;
+    top: 78px;
+    width: auto;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    overflow: visible;
   }
 }
 
