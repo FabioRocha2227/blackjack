@@ -1246,3 +1246,37 @@
   padding: 8px 4px;
 }
 .strategy-empty { color: rgba(255,255,255,0.6); }
+
+@media (max-width: 720px) {
+  .header-controls {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .header-controls .menu-button,
+  .header-controls .strategy-header-toggle {
+    width: auto;
+    min-width: 48px;
+    padding: 9px 11px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .header-button-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .header-button-text {
+    display: none;
+  }
+}
