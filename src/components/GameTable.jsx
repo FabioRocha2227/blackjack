@@ -61,7 +61,7 @@ export default function GameTable({ profile, onExit }) {
     <div className="table-container">
       <div className="header-controls">
           <button className="menu-button" onClick={handleExit} aria-label="Back to menu">
-            <span className="header-button-icon" aria-hidden="true">↩</span>
+            <span className="header-button-icon" aria-hidden="true">←</span>
             <span className="header-button-text">Menu</span>
           </button>
           {game.gameStarted && (
@@ -71,7 +71,7 @@ export default function GameTable({ profile, onExit }) {
               aria-label={showStrategy ? "Hide strategy" : "Show strategy"}
               aria-pressed={showStrategy}
             >
-              <span className="header-button-icon" aria-hidden="true">♟</span>
+              <span className="header-button-icon" aria-hidden="true">▤</span>
               <span className="header-button-text">
                 {showStrategy ? "Hide Strategy ▲" : "Show Strategy ▼"}
               </span>

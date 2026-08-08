@@ -1216,8 +1216,8 @@
   right: 12px;
   top: 80px;
   width: min(560px, 94vw);
-  max-width: 560px;
-  min-height: 240px;
+  max-width: 260px;
+  min-height: 140px;
   height: auto;
   background: rgba(6, 27, 17, 0.96);
   border: 1px solid rgba(255,255,255,0.06);
