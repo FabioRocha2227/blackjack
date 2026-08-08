@@ -684,6 +684,11 @@
   flex: 1 1 160px;
 }
 
+.new-game-form .popup-actions button {
+  padding: 0.75rem 1rem;
+  line-height: 1.05;
+}
+
 .popup > button {
   width: 100%;
 }
@@ -935,6 +940,7 @@
 
   .table-header--game {
     gap: 6px;
+    padding-top: 54px;
   }
 
   .table-header .game-subtitle {
@@ -997,18 +1003,32 @@
     top: 14px;
     right: 14px;
     left: 14px;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    gap: 8px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
     flex-wrap: nowrap;
   }
 
   .header-controls .menu-button,
   .header-controls .strategy-header-toggle {
-    width: 100%;
-    padding: 9px 12px;
+    width: auto;
+    min-width: 48px;
+    padding: 9px 11px;
+    border-radius: 999px;
     font-size: 0.78rem;
+  }
+
+  .header-button-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .header-button-text {
+    display: none;
   }
 
   .card img {
@@ -1178,6 +1198,10 @@
   font-weight: 700;
 
   cursor: pointer;
+}
+
+.header-button-icon {
+  display: none;
 }
 
 .header-controls .strategy-header-toggle[aria-pressed="true"] {

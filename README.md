@@ -52,7 +52,9 @@
 	```bash
 	git add .
 	git commit -m "Update website"
-	it push
+	git push
 
 	npm run deploy
 	```
+
+2. Website
