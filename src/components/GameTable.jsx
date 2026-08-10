@@ -3,6 +3,7 @@ import DealerArea from "./DealerArea.jsx";
 import PlayerArea from "./PlayerArea.jsx";
 import Controls from "./Controls.jsx";
 import ResultPopup from "./ResultPopup.jsx";
+import ConfirmationPopup from "./ConfirmationPopup.jsx";
 import BettingPanel from "./BettingPanel.jsx";
 import StrategySidebar from "./StrategySidebar.jsx";
 import ChipStack from "./ChipsStack.jsx";
@@ -14,6 +15,15 @@ import { useEffect, useRef, useState } from "react";
 export default function GameTable({ profile, onExit }) {
   const game = useBlackjack(profile?.chips ?? 0);
   const [showStrategy, setShowStrategy] = useState(false);
+  const [showMyPopup, setShowMyPopup] = useState(false);
+
+  function handleOpenPopup() {
+  setShowMyPopup(true);
+}
+
+function handleClosePopup() {
+  setShowMyPopup(false);
+}
 
 
   const savedRef = useRef(false);
@@ -60,10 +70,19 @@ export default function GameTable({ profile, onExit }) {
   return (
     <div className="table-container">
       <div className="header-controls">
-          <button className="menu-button" onClick={handleExit} aria-label="Back to menu">
+          <button className="menu-button" onClick={handleOpenPopup} aria-label="Back to menu">
             <span className="header-button-icon" aria-hidden="true">←</span>
             <span className="header-button-text">Menu</span>
           </button>
+          <ConfirmationPopup
+            show={showMyPopup}
+            message="Are you sure you want to exit the game?"
+            onConfirm={() => {
+              handleClosePopup();
+              handleExit();
+            }}
+            onCancel={handleClosePopup}
+          />
           {game.gameStarted && (
             <button
               className="strategy-header-toggle"
