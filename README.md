@@ -39,7 +39,7 @@
 	npm run build
 	```
 
-2. Open the built Electron app:
+2. Open the built Electron app: 
 
 	```bash
 	npm start
