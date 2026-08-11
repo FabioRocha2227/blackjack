@@ -1315,32 +1315,22 @@
      ------------------------------------------------------- */
 
   .player-area--split {
-    width: min(100%, 520px);
+    width: 100%;
+    max-width: 480px;
 
-    flex-direction: column;
+    flex-direction: row;
 
-    align-items: stretch;
+    align-items: flex-start;
+    justify-content: center;
 
-    gap: 12px;
+    gap: 4px;
 
     margin-top: 2px;
-    padding: 14px 12px 12px;
+    padding: 0;
 
-    border-radius: 22px;
-
-    border: 1px solid rgba(255, 239, 192, 0.14);
-
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.04),
-        rgba(255, 255, 255, 0.02)
-      ),
-      rgba(6, 27, 17, 0.5);
-
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 12px 24px rgba(0, 0, 0, 0.16);
+    border: none;
+    background: none;
+    box-shadow: none;
   }
 
   .split-hand {
@@ -1348,42 +1338,48 @@
 
     max-width: none;
 
-    flex: none;
+    flex: 1 1 0;
+    min-width: 0;
 
-    padding: 10px 12px 14px;
+    padding: 4px 6px 10px;
 
-    border-radius: 18px;
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    background: rgba(255, 255, 255, 0.03);
+    border: none;
+    background: none;
   }
 
-
-
   .split-hand__header {
-    min-height: 28px;
+    min-height: 24px;
 
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 
-    margin-bottom: 4px;
+    gap: 2px;
+
+    margin-bottom: 2px;
   }
 
   .split-hand__title {
-    font-size: 0.7rem;
-    letter-spacing: 0.16em;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-align: center;
   }
 
   .split-hand__status {
-    font-size: 0.6rem;
+    font-size: 0.56rem;
+  }
+
+  .split-hand__status::after {
+    width: 18px;
+    bottom: -5px;
   }
 
   .split-hand .hand-value {
-    margin-top: 6px;
-    font-size: 0.8rem;
+    margin-top: 4px;
+    padding: 3px 9px;
+    font-size: 0.7rem;
+    white-space: nowrap;
   }
 
   .split-hand.active-hand {
@@ -1391,16 +1387,26 @@
   }
 
   /*
-    Slightly smaller cards when split on mobile.
-    This keeps both hands visible without excessive scrolling.
+    Cards shrink to fit two full hands side by side on narrow phones
+    without wrapping or forcing horizontal scroll.
   */
   .player-area--split .card img {
-    width: clamp(54px, 14vw, 70px);
+    width: clamp(42px, 19vw, 62px);
+  }
+
+  .player-area--split .hand {
+    gap: 4px;
+    row-gap: 6px;
   }
 
   .hand-bet {
-    margin-top: 7px;
-    padding: 6px 16px 2px;
+    margin-top: 5px;
+    padding: 5px 12px 2px;
+  }
+
+  .hand-bet__amount {
+    font-size: 0.62rem;
+    padding: 1px 7px;
   }
 
 
