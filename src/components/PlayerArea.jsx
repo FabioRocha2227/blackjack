@@ -5,6 +5,7 @@ import { memo } from "react";
 
 function HandBet({ amount }) {
   if (!amount || amount <= 0) return null;
+
   return (
     <div className="hand-bet">
       <ChipStack amount={amount} size="sm" />
@@ -32,22 +33,42 @@ function PlayerArea({
             valueLabel={`Value: ${handValue(player)}`}
             rotatedIndexes={doubled ? [player.length - 1] : []}
           />
+
           <HandBet amount={lastBet} />
         </>
       ) : (
-        playerHands.map((hand, i) => (
-          <div
-            key={i}
-            className={`split-hand ${activeHandIndex === i ? "active-hand" : ""}`}
-          >
-            <Hand
-              cards={hand}
-              valueLabel={`Hand ${i + 1} Value: ${handValue(hand)}`}
-              rotatedIndexes={handDoubled?.[i] ? [hand.length - 1] : []}
-            />
-            <HandBet amount={handBets?.[i]} />
-          </div>
-        ))
+        playerHands.map((hand, i) => {
+          const isActive = activeHandIndex === i;
+
+          return (
+            <div
+              key={i}
+              className={`split-hand ${isActive ? "active-hand" : ""}`}
+            >
+              <div className="split-hand__header">
+                <span className="split-hand__title">
+                  Hand {i + 1}
+                </span>
+
+                {isActive && (
+                  <span className="split-hand__status">
+                    Playing
+                  </span>
+                )}
+              </div>
+
+              <Hand
+                cards={hand}
+                valueLabel={`Value: ${handValue(hand)}`}
+                rotatedIndexes={
+                  handDoubled?.[i] ? [hand.length - 1] : []
+                }
+              />
+
+              <HandBet amount={handBets?.[i]} />
+            </div>
+          );
+        })
       )}
     </div>
   );

@@ -19,45 +19,52 @@ function Controls({
   onDoubleSplit,
   onSurrender,
 }) {
+  const currentHand = splitActive
+    ? playerHands?.[activeHandIndex] ?? []
+    : player;
+  const currentBet = splitActive
+    ? handBets?.[activeHandIndex] ?? bet
+    : bet;
+
   return (
     <div className="controls-wrapper">
       <div className="controls">
         {!splitActive ? (
           <>
-            <button onClick={onHit}>Hit</button>
+            <button type="button" onClick={onHit}>Hit</button>
 
-            <button onClick={() => onStand()}>
+            <button type="button" onClick={() => onStand()}>
               Stand
             </button>
 
             {/* Surrender available as initial action on two-card hands */}
             {player.length === 2 && (
-              <button onClick={onSurrender}>Surrender</button>
+              <button type="button" onClick={onSurrender}>Surrender</button>
             )}
 
             
 
-            {canDouble(player) && chips >= bet && (
-              <button onClick={onDouble}>Double</button>
+            {canDouble(currentHand) && chips >= currentBet && (
+              <button type="button" onClick={onDouble}>Double</button>
             )}
 
-            {canSplitHand(player) && chips >= bet && (
-              <button onClick={onSplit}>Split</button>
+            {canSplitHand(currentHand) && chips >= currentBet && (
+              <button type="button" onClick={onSplit}>Split</button>
             )}
           </>
         ) : (
           <>
-            <button onClick={() => onHitSplit(activeHandIndex)}>
+            <button type="button" onClick={() => onHitSplit(activeHandIndex)}>
               Hit
             </button>
 
-            <button onClick={() => onStandSplit(activeHandIndex)}>
+            <button type="button" onClick={() => onStandSplit(activeHandIndex)}>
               Stand
             </button>
 
-            {canDouble(playerHands[activeHandIndex]) &&
-              chips >= handBets[activeHandIndex] && (
+            {canDouble(currentHand) && chips >= currentBet && (
                 <button
+                  type="button"
                   onClick={() => onDoubleSplit(activeHandIndex)}
                 >
                   Double
