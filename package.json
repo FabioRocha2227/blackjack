@@ -16,7 +16,7 @@
     "dev": "vite",
     "dev:desktop": "npm run build && electron .",
     "build": "vite build",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist --nojekyll",
     "start": "electron .",
     "lint": "eslint .",
     "preview": "vite preview"

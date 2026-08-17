@@ -9,6 +9,23 @@ export default defineConfig(({ command }) => ({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['vite.svg', 'pwa-icon.svg'],
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) =>
+              url.pathname.includes('/cards/') || url.pathname.includes('/chips/'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'blackjack-images',
+              expiration: {
+                maxEntries: 200,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year - static assets, never change
+              },
+            },
+          },
+        ],
+      },
       manifest: {
         name: 'Blackjack',
         short_name: 'Blackjack',
